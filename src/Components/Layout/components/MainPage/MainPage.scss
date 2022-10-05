@@ -1,0 +1,35 @@
+.mainPage {
+  width: 100%;
+}
+.mainPage-title {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.mainPage-listImg {
+  width: 100%;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.selectAll {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.selectAll-amount {
+  margin-left: 12px;
+  background-color: #ffb9b9;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-weight: 600;
+}
+.selectAll-btn {
+  padding: 8px 12px;
+  border: none;
+  background-color: #e9032a;
+  color: #fff;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
