@@ -1,71 +1,70 @@
-import PropTypes from 'prop-types'
-import { useEffect } from 'react'
-import { Link as RouterLink, useLocation } from 'react-router-dom'
+import PropTypes from 'prop-types';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
-import { styled } from '@mui/material/styles'
 import {
+  Avatar,
   Box,
-  Link,
   Button,
   Drawer,
-  Typography,
-  Avatar,
+  Link,
   Stack,
-} from '@mui/material'
+  Typography,
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 // mock
-import account from '@/Components/Global/_mock/account'
+import account from '@/Components/Global/_mock/account';
+import { useEffect } from 'react';
 // hooks
-import { useResponsive } from '@/customHooks'
+import { useResponsive } from '@/customHooks';
 // components
-import Logo from '@/Components/Global/Logo'
-import Scrollbar from '@/Components/Global/Scrollbar'
-import NavSection from '@/Components/Global/NavSection'
+import Logo from '@/Components/Global/Logo';
+import NavSection from '@/Components/Global/NavSection';
+import Scrollbar from '@/Components/Global/Scrollbar';
 //
-import navConfig from '@/Components/Global/NavSection/NavConfig'
-import React from 'react'
+import navConfig from '@/Components/Global/NavSection/NavConfig';
 // ----------------------------------------------------------------------
 
-const DRAWER_WIDTH = 280
+const DRAWER_WIDTH = 280;
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     flexShrink: 0,
     width: DRAWER_WIDTH,
   },
-}))
+}));
 
 const AccountStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(2, 2.5),
   borderRadius: Number(theme.shape.borderRadius) * 1.5,
-  backgroundColor: theme.palette.grey[200],
-}))
+  backgroundColor: theme.palette.grey[50012],
+}));
 
 // ----------------------------------------------------------------------
 
 Sidebar.propTypes = {
   isOpenSidebar: PropTypes.bool,
   onCloseSidebar: PropTypes.func,
-}
+};
 interface sideBarProps {
-  isOpenSidebar: boolean
-  onCloseSidebar: () => void
+  isOpenSidebar: boolean;
+  onCloseSidebar: () => void;
 }
 export default function Sidebar({
   isOpenSidebar,
   onCloseSidebar,
 }: sideBarProps) {
-  const { pathname } = useLocation()
+  const { pathname } = useLocation();
 
-  const isDesktop = useResponsive('up', 'lg')
+  const isDesktop = useResponsive('up', 'lg');
 
   useEffect(() => {
     if (isOpenSidebar) {
-      onCloseSidebar()
+      onCloseSidebar();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
+  }, [pathname]);
 
   const renderContent = (
     <Scrollbar
@@ -133,7 +132,7 @@ export default function Sidebar({
         </Stack>
       </Box>
     </Scrollbar>
-  )
+  );
 
   return (
     <RootStyle>
@@ -165,5 +164,5 @@ export default function Sidebar({
         </Drawer>
       )}
     </RootStyle>
-  )
+  );
 }

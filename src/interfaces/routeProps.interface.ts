@@ -1,8 +1,8 @@
-import React, { FC } from 'react'
+import React, { FC } from 'react';
 export interface RouteProps {
-  title: string
-  path: string
-  element: FC
-  layout?: null | FC
-  private: boolean
+  title: string;
+  path: string;
+  element: FC;
+  layout?: null | FC;
+  private: boolean;
 }

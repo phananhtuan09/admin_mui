@@ -1,13 +1,32 @@
-import { alpha } from '@mui/material/styles'
+import { alpha } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
-function createGradient(color1: any, color2: any) {
-  return `linear-gradient(to bottom, ${color1}, ${color2})`
+function createGradient(color1: string, color2: string) {
+  return `linear-gradient(to bottom, ${color1}, ${color2})`;
 }
-
+interface Grey {
+  0: string;
+  100: string;
+  200: string;
+  300: string;
+  400: string;
+  500: string;
+  600: string;
+  700: string;
+  800: string;
+  900: string;
+  50008: string;
+  50012: string;
+  50016: string;
+  50024: string;
+  50032: string;
+  50048: string;
+  50056: string;
+  50080: string;
+}
 // SETUP COLORS
-const GREY = {
+const GREY: Grey = {
   0: '#FFFFFF',
   100: '#F9FAFB',
   200: '#F4F6F8',
@@ -18,15 +37,15 @@ const GREY = {
   700: '#454F5B',
   800: '#212B36',
   900: '#161C24',
-  500_8: alpha('#919EAB', 0.08),
-  500_12: alpha('#919EAB', 0.12),
-  500_16: alpha('#919EAB', 0.16),
-  500_24: alpha('#919EAB', 0.24),
-  500_32: alpha('#919EAB', 0.32),
-  500_48: alpha('#919EAB', 0.48),
-  500_56: alpha('#919EAB', 0.56),
-  500_80: alpha('#919EAB', 0.8),
-}
+  50008: alpha('#919EAB', 0.08),
+  50012: alpha('#919EAB', 0.12),
+  50016: alpha('#919EAB', 0.16),
+  50024: alpha('#919EAB', 0.24),
+  50032: alpha('#919EAB', 0.32),
+  50048: alpha('#919EAB', 0.48),
+  50056: alpha('#919EAB', 0.56),
+  50080: alpha('#919EAB', 0.8),
+};
 
 const PRIMARY = {
   lighter: '#D1E9FC',
@@ -35,7 +54,7 @@ const PRIMARY = {
   dark: '#103996',
   darker: '#061B64',
   contrastText: '#fff',
-}
+};
 
 const SECONDARY = {
   lighter: '#D6E4FF',
@@ -44,7 +63,7 @@ const SECONDARY = {
   dark: '#1939B7',
   darker: '#091A7A',
   contrastText: '#fff',
-}
+};
 
 const INFO = {
   lighter: '#D0F2FF',
@@ -53,7 +72,7 @@ const INFO = {
   dark: '#0C53B7',
   darker: '#04297A',
   contrastText: '#fff',
-}
+};
 
 const SUCCESS = {
   lighter: '#E9FCD4',
@@ -62,7 +81,7 @@ const SUCCESS = {
   dark: '#229A16',
   darker: '#08660D',
   contrastText: GREY[800],
-}
+};
 
 const WARNING = {
   lighter: '#FFF7CD',
@@ -71,7 +90,7 @@ const WARNING = {
   dark: '#B78103',
   darker: '#7A4F01',
   contrastText: GREY[800],
-}
+};
 
 const ERROR = {
   lighter: '#FFE7D9',
@@ -80,7 +99,7 @@ const ERROR = {
   dark: '#B72136',
   darker: '#7A0C2E',
   contrastText: '#fff',
-}
+};
 
 const GRADIENTS = {
   primary: createGradient(PRIMARY.light, PRIMARY.main),
@@ -88,7 +107,7 @@ const GRADIENTS = {
   success: createGradient(SUCCESS.light, SUCCESS.main),
   warning: createGradient(WARNING.light, WARNING.main),
   error: createGradient(ERROR.light, ERROR.main),
-}
+};
 
 const CHART_COLORS = {
   violet: ['#826AF9', '#9E86FF', '#D0AEFF', '#F7D2FF'],
@@ -96,9 +115,9 @@ const CHART_COLORS = {
   green: ['#2CD9C5', '#60F1C8', '#A4F7CC', '#C0F2DC'],
   yellow: ['#FFE700', '#FFEF5A', '#FFF7AE', '#FFF3D6'],
   red: ['#FF6C40', '#FF8F6D', '#FFBD98', '#FFF2D4'],
-}
-
-const palette = {
+};
+import { PaletteProps } from './theme.interface';
+const palette: PaletteProps = {
   common: { black: '#000', white: '#fff' },
   primary: { ...PRIMARY },
   secondary: { ...SECONDARY },
@@ -114,14 +133,15 @@ const palette = {
   background: { paper: '#fff', default: GREY[100], neutral: GREY[200] },
   action: {
     active: GREY[600],
-    hover: GREY[500_8],
-    selected: GREY[500_16],
-    disabled: GREY[500_80],
-    disabledBackground: GREY[500_24],
-    focus: GREY[500_24],
+    hover: GREY[50008],
+    selected: GREY[50016],
+    disabled: GREY[50080],
+    disabledBackground: GREY[50024],
+    focus: GREY[50024],
     hoverOpacity: 0.08,
     disabledOpacity: 0.48,
   },
-}
+  mode: 'light',
+};
 
-export default palette
+export default palette;

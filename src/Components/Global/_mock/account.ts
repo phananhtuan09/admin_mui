@@ -6,6 +6,6 @@ const account = {
   photoURL:
     'https://minimal-kit-react.vercel.app/static/mock-images/avatars/avatar_default.jpg',
   role: 'admin',
-}
+};
 
-export default account
+export default account;

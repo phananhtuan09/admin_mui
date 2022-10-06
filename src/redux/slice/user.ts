@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { v4 as uuidv4 } from 'uuid'
+import { createSlice } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
@@ -12,6 +12,6 @@ export const userSlice = createSlice({
   reducers: {
     addUsers: (state, action) => {},
   },
-})
-export const { addUsers } = userSlice.actions
-export default userSlice.reducer
+});
+export const { addUsers } = userSlice.actions;
+export default userSlice.reducer;

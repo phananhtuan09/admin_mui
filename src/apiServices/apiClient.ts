@@ -1,14 +1,14 @@
-import axios from 'axios'
-import { stringify } from 'qs'
-const domainUrl = process.env.REACT_APP_BASE_URL
-const accessToken = process.env.REACT_APP_ACCESS_TOKEN
+import axios from 'axios';
+import { stringify } from 'qs';
+const domainUrl = process.env.REACT_APP_BASE_URL;
+const accessToken = process.env.REACT_APP_ACCESS_TOKEN;
 export const ApiClient = {
-  getHeaders(contentType: string = 'application/x-www-form-urlencoded') {
+  getHeaders(contentType = 'application/x-www-form-urlencoded') {
     return {
       'Content-Type': contentType,
       'Access-Control-Allow-Origin': '*',
       authorization: `Bearer ${accessToken}`,
-    }
+    };
   },
   //convert object to query string
   getStringQuery(query: object | string = {}, options: object = {}) {
@@ -20,44 +20,44 @@ export const ApiClient = {
              + valid => not change
              + empty => return false       
     */
-    let resultQuery = query
+    let resultQuery = query;
     if (
       typeof resultQuery === 'object' &&
       Object.keys(resultQuery).length === 0
     ) {
-      return (resultQuery = '')
+      return (resultQuery = '');
     }
     if (resultQuery && typeof resultQuery !== 'string') {
-      resultQuery = stringify(resultQuery, options)
+      resultQuery = stringify(resultQuery, options);
     }
-    return resultQuery
+    return resultQuery;
   },
   handleFormKey(namespace: any, property: any) {
     if (!namespace) {
-      return property
+      return property;
     }
 
     if (!isNaN(Number(property))) {
-      return `${namespace}[${property}]`
+      return `${namespace}[${property}]`;
     }
-    return `${namespace}.${property}`
+    return `${namespace}.${property}`;
   },
   handleObjProperty(fd: any, formKey: any, objElement: any) {
     if (objElement instanceof Date) {
-      fd.append(formKey, objElement.toISOString())
+      fd.append(formKey, objElement.toISOString());
 
-      return
+      return;
     }
     if (
       typeof objElement === 'object' &&
       !(objElement instanceof File) &&
       !(objElement instanceof Blob)
     ) {
-      this.convertToPostData(objElement, fd, formKey)
+      this.convertToPostData(objElement, fd, formKey);
 
-      return
+      return;
     }
-    fd.append(formKey, objElement)
+    fd.append(formKey, objElement);
   },
   catchErrorRequest(error: any) {
     if (error.response) {
@@ -65,170 +65,170 @@ export const ApiClient = {
        * The request was made and the server responded with a
        * status code that falls out of the range of 2xx
        */
-      let errorResponse = {
+      const errorResponse = {
         message: error.response.data,
         status: error.response.status,
         headers: error.response.headers,
-      }
+      };
 
-      return errorResponse
+      return errorResponse;
     } else if (error.request) {
       /*
        * The request was made but no response was received, `error.request`
        * is an instance of XMLHttpRequest in the browser and an instance
        * of http.ClientRequest in Node.js
        */
-      return error.request
+      return error.request;
     } else {
       // Something happened in setting up the request and triggered an Error
-      return { Error: error.message }
+      return { Error: error.message };
     }
   },
   convertToPostData(obj: any, form: any, namespace: any) {
-    const fd = form || new URLSearchParams()
+    const fd = form || new URLSearchParams();
 
-    let formKey
+    let formKey;
     for (const property in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, property)) {
-        formKey = this.handleFormKey(namespace, property)
-        this.handleObjProperty(fd, formKey, obj[property])
+        formKey = this.handleFormKey(namespace, property);
+        this.handleObjProperty(fd, formKey, obj[property]);
       }
     }
-    return fd
+    return fd;
   },
   // get
   async get(url = '', query = {}, params = {}) {
-    let stringQuery = this.getStringQuery(query)
-    let requestUrl = !stringQuery ? url : `${url}?${stringQuery}`
+    const stringQuery = this.getStringQuery(query);
+    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`;
     const response = await axios
       .get(domainUrl + requestUrl, {
         params,
         headers: this.getHeaders(),
       })
-      .catch((error) => this.catchErrorRequest(error))
-    return response
+      .catch((error) => this.catchErrorRequest(error));
+    return response;
   },
   //post
   async post(url = '', query = {}, params = {}, appendUrl = '') {
-    let stringQuery = this.getStringQuery(query)
-    let requestUrl = !stringQuery
+    const stringQuery = this.getStringQuery(query);
+    const requestUrl = !stringQuery
       ? url
-      : ` ${url}?${stringQuery}${appendUrl || ''}`
-    const param = this.convertToPostData(params, undefined, undefined)
+      : ` ${url}?${stringQuery}${appendUrl || ''}`;
+    const param = this.convertToPostData(params, undefined, undefined);
 
     const config = {
       headers: this.getHeaders(),
-    }
+    };
 
     const response = await axios
       .post(domainUrl + requestUrl, param, config)
-      .catch((error) => this.catchErrorRequest(error))
-    return response
+      .catch((error) => this.catchErrorRequest(error));
+    return response;
   },
   async postJsonData(url = '', query = {}, params = {}) {
-    let stringQuery = this.getStringQuery(query)
-    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`
+    const stringQuery = this.getStringQuery(query);
+    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`;
 
     const config = {
       headers: this.getHeaders('application/json'),
-    }
+    };
 
     const response = await axios
       .post(domainUrl + requestUrl, params, config)
-      .catch((error) => this.catchErrorRequest(error))
-    return response
+      .catch((error) => this.catchErrorRequest(error));
+    return response;
   },
   async postMultipleData(url = '', query = {}, params = {}) {
-    let stringQuery = this.getStringQuery(query)
-    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`
+    const stringQuery = this.getStringQuery(query);
+    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`;
 
     const config = {
       headers: this.getHeaders('multipart/form-data'),
-    }
-    const form = new FormData()
-    const param = this.convertToPostData(params, form, undefined)
+    };
+    const form = new FormData();
+    const param = this.convertToPostData(params, form, undefined);
     const response = await axios
       .post(domainUrl + requestUrl, param, config)
-      .catch((error) => this.catchErrorRequest(error))
-    return response
+      .catch((error) => this.catchErrorRequest(error));
+    return response;
   },
   async postFile(url = '', query = {}, fileKey = '', file: any) {
-    let stringQuery = this.getStringQuery(query)
-    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`
+    const stringQuery = this.getStringQuery(query);
+    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`;
     const config = {
       headers: this.getHeaders(),
-    }
+    };
 
-    const formData = new FormData()
-    formData.append(fileKey, file)
+    const formData = new FormData();
+    formData.append(fileKey, file);
     const response = await axios
       .post(domainUrl + requestUrl, formData, config)
-      .catch((error) => this.catchErrorRequest(error))
-    return response
+      .catch((error) => this.catchErrorRequest(error));
+    return response;
   },
   //put
   async putJsonData(url = '', query = {}, params = {}) {
-    let stringQuery = this.getStringQuery(query)
-    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`
+    const stringQuery = this.getStringQuery(query);
+    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`;
 
     const config = {
       headers: this.getHeaders('application/json'),
-    }
+    };
 
     const response = await axios
       .put(domainUrl + requestUrl, params, config)
-      .catch((error) => this.catchErrorRequest(error))
-    return response
+      .catch((error) => this.catchErrorRequest(error));
+    return response;
   },
   async putJsonDataArr(url = '', query = {}, params = {}) {
-    let stringQuery = this.getStringQuery(query)
-    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`
+    const stringQuery = this.getStringQuery(query);
+    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`;
 
     const config = {
       headers: this.getHeaders('application/json'),
-    }
+    };
 
     const response = await axios
       .put(domainUrl + requestUrl, params, config)
-      .catch((error) => this.catchErrorRequest(error))
-    return response
+      .catch((error) => this.catchErrorRequest(error));
+    return response;
   },
   async put(url = '', query = {}, params = {}) {
-    let stringQuery = this.getStringQuery(query)
-    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`
+    const stringQuery = this.getStringQuery(query);
+    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`;
     const config = {
       headers: this.getHeaders(),
-    }
+    };
     const response = await axios
       .put(domainUrl + requestUrl, params, config)
-      .catch((error) => this.catchErrorRequest(error))
+      .catch((error) => this.catchErrorRequest(error));
 
-    return response
+    return response;
   },
   //delete
   async delete(url = '', params = {}) {
-    let stringQuery = this.getStringQuery(params)
-    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`
+    const stringQuery = this.getStringQuery(params);
+    const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`;
 
     const config = {
       headers: this.getHeaders(),
-    }
+    };
 
     const response = await axios
       .delete(domainUrl + requestUrl, config)
-      .catch((error) => this.catchErrorRequest(error))
-    return response
+      .catch((error) => this.catchErrorRequest(error));
+    return response;
   },
 
   async deleteBody(url = '', params = {}) {
-    const requestUrl = `${url}`
+    const requestUrl = `${url}`;
     const config = {
       headers: this.getHeaders('application/json'),
       data: params,
-    }
+    };
     const response = axios
       .delete(domainUrl + requestUrl, config)
-      .catch((error) => this.catchErrorRequest(error))
-    return response
+      .catch((error) => this.catchErrorRequest(error));
+    return response;
   },
-}
+};

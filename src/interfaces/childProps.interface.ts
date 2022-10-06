@@ -1,5 +1,5 @@
-import React from 'react'
+import React from 'react';
 export interface Props {
-  children?: React.ReactNode
+  children?: React.ReactNode;
   // any props that come into the component
 }

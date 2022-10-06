@@ -7,7 +7,7 @@ import { Box, Card, CardHeader } from '@mui/material'
 import { fNumber } from '@/utils/formatNumber'
 // components
 import { BaseOptionChart } from '@/Components/Global/chart'
-
+import React from 'react'
 // ----------------------------------------------------------------------
 
 AppConversionRates.propTypes = {
@@ -15,26 +15,26 @@ AppConversionRates.propTypes = {
   subheader: PropTypes.string,
   chartData: PropTypes.array.isRequired,
 }
-interface AppConversionRatesProps {
-  title?: string
-  subheader?: string
-  chartData?: any
-}
+// interface AppConversionRatesProps {
+//   title?: string
+//   subheader?: string
+//   chartData?: any
+// }
 export default function AppConversionRates({
   title,
   subheader,
   chartData,
   ...other
-}: AppConversionRatesProps) {
-  const chartLabels = chartData.map((i: any) => i.label)
+}) {
+  const chartLabels = chartData.map((i) => i.label)
 
-  const chartSeries = chartData.map((i: any) => i.value)
+  const chartSeries = chartData.map((i) => i.value)
 
   const chartOptions = merge(BaseOptionChart(), {
     tooltip: {
       marker: { show: false },
       y: {
-        formatter: (seriesName: any) => fNumber(seriesName),
+        formatter: (seriesName) => fNumber(seriesName),
         title: {
           formatter: () => '',
         },

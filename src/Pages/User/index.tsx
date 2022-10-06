@@ -1,6 +1,6 @@
-import React from 'react'
-import './Profile.scss'
-const userInfo = JSON.parse(localStorage.getItem('userInfo') || '')
+import React from 'react';
+import '@/Profile.scss';
+const userInfo = JSON.parse(localStorage.getItem('userInfo') || '');
 
 function User() {
   return (
@@ -19,7 +19,7 @@ function User() {
         <li>modifiedAt: {userInfo.modifiedAt}</li>
       </ul>
     </>
-  )
+  );
 }
 
-export default User
+export default User;

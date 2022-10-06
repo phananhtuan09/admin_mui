@@ -1,17 +1,17 @@
 // material
-import { alpha, useTheme } from '@mui/material/styles'
-import { GlobalStyles } from '@mui/material'
-
+import { alpha, useTheme } from '@mui/material/styles';
+import { GlobalStyles } from '@mui/material';
+import React from 'react';
 // ----------------------------------------------------------------------
-
+import { ThemeOptions } from '@/theme/theme.interface';
+import { greyKey } from '@/theme/shadows';
 export function BaseOptionChartStyle() {
-  const theme = useTheme()
-
+  const theme: ThemeOptions = useTheme();
   const background = {
     backdropFilter: 'blur(6px)',
     WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
     backgroundColor: alpha(theme.palette.background.default, 0.72),
-  }
+  };
 
   return (
     <GlobalStyles
@@ -38,7 +38,7 @@ export function BaseOptionChartStyle() {
               border: 0,
               textAlign: 'center',
               fontWeight: theme.typography.fontWeightBold,
-              backgroundColor: theme.palette.grey[500],
+              backgroundColor: theme.palette.grey[500 as greyKey],
               color:
                 theme.palette.text[
                   theme.palette.mode === 'light' ? 'secondary' : 'primary'
@@ -63,24 +63,24 @@ export function BaseOptionChartStyle() {
         },
       }}
     />
-  )
+  );
 }
 
 export default function BaseOptionChart() {
-  const theme = useTheme()
+  const theme: ThemeOptions = useTheme();
 
   const LABEL_TOTAL = {
     show: true,
     label: 'Total',
     color: theme.palette.text.secondary,
     ...theme.typography.subtitle2,
-  }
+  };
 
   const LABEL_VALUE = {
     offsetY: 8,
     color: theme.palette.text.primary,
     ...theme.typography.h3,
-  }
+  };
 
   return {
     // Colors
@@ -202,7 +202,7 @@ export default function BaseOptionChart() {
       radialBar: {
         track: {
           strokeWidth: '100%',
-          background: theme.palette.grey[500],
+          background: theme.palette.grey[500 as greyKey],
         },
         dataLabels: {
           value: LABEL_VALUE,
@@ -245,5 +245,5 @@ export default function BaseOptionChart() {
         },
       },
     ],
-  }
+  };
 }
