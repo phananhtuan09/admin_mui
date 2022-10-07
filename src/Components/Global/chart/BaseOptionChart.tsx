@@ -133,14 +133,14 @@ export default function BaseOptionChart() {
     // Datalabels
     dataLabels: { enabled: false },
 
-    // Stroke
+    //Stroke
     stroke: {
       width: 3,
-      curve: 'smooth',
-      lineCap: 'round',
+      curve: 'smooth' as const,
+      lineCap: 'round' as const,
     },
 
-    // Grid
+    //Grid
     grid: {
       strokeDashArray: 3,
       borderColor: theme.palette.divider,
@@ -168,9 +168,9 @@ export default function BaseOptionChart() {
     // Legend
     legend: {
       show: true,
-      fontSize: 13,
-      position: 'top',
-      horizontalAlign: 'right',
+      fontSize: '13px',
+      position: 'top' as const,
+      horizontalAlign: 'right' as const,
       markers: {
         radius: 12,
       },

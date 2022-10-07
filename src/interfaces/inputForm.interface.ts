@@ -1,4 +1,4 @@
-export default interface inputForm {
+export default interface InputForm {
   id: string;
   name: string;
   type: string;

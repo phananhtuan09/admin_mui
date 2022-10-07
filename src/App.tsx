@@ -9,10 +9,9 @@ import ScrollToTop from '@/utils/ScrollToTop';
 
 import { BaseOptionChartStyle } from '@/Components/Global/chart/BaseOptionChart';
 
-const DefaultLayout = React.lazy(
-  () => import('@/Components/Layout/DefaultLayout')
-);
-const NotFoundPage = React.lazy(() => import('@/Pages/NotFound'));
+const DefaultLayout = React.lazy(() => import('@/Layout/DefaultLayout'));
+const NotFoundPage = React.lazy(() => import('@/Pages/Admin/NotFound'));
+//import { alpha, useTheme } from '@mui/material/styles';
 
 interface MyInFo {
   name: string;
@@ -20,6 +19,9 @@ interface MyInFo {
 }
 
 function App() {
+  // const theme = useTheme();
+  // console.log(theme);
+
   //useEffect(() => {
   //let myInfo = {
   //   name: 'Tuan',

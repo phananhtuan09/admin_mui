@@ -23,9 +23,10 @@
     "plugin:import/recommended",
     "eslint-config-prettier"
   ],
-  "plugins": ["react", "react-hooks"],
+  "plugins": ["react", "import", "react-hooks", "@typescript-eslint"],
   "rules": {
     "linebreak-style": "off",
+    "import/no-named-as-default": "off",
     "react-hooks/rules-of-hooks": "error",
     "react/jsx-filename-extension": [
       1,
@@ -67,8 +68,7 @@
     "no-case-declarations": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unused-vars": "off",
-    "react-hooks/exhaustive-deps": "off",
-    "import/no-named-as-default": "off"
+    "react-hooks/exhaustive-deps": "off"
   },
   "env": {
     "es6": true,
@@ -77,10 +77,21 @@
     "jest": true
   },
   "settings": {
+    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
+    "react": {
+      "version": "detect"
+    },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
     "import/resolver": {
       "node": {
         "paths": ["src"],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
+      "alias": {
+        "map": [["@/", "./src/"]],
+        "extensions": [".js"]
       }
     }
   }

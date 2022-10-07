@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
-const Login = React.lazy(() => import('@/Pages/Login'));
-const Register = React.lazy(() => import('@/Pages/Register'));
-const Home = React.lazy(() => import('@/Pages/Home'));
-const User = React.lazy(() => import('@/Pages/User'));
-const Product = React.lazy(() => import('@/Pages/Product'));
-const Blog = React.lazy(() => import('@/Pages/Blog'));
+const Login = React.lazy(() => import('@/Pages/Admin/Login'));
+const Register = React.lazy(() => import('@/Pages/Admin/Register'));
+const Dashboard = React.lazy(() => import('@/Pages/Admin/Dashboard'));
+const User = React.lazy(() => import('@/Pages/Admin/User'));
+const Product = React.lazy(() => import('@/Pages/Admin/Product'));
+const Blog = React.lazy(() => import('@/Pages/Admin/Blog'));
 
-const NullLayout = React.lazy(() => import('@/Components/Layout/NullLayout'));
+const NullLayout = React.lazy(() => import('@/Layout/NullLayout'));
 import { RouteProps } from '@/interfaces/routeProps.interface';
 
 export const publicRoutes: RouteProps[] = [
-  { title: 'Home', path: '/', element: Home, private: true },
+  { title: 'Dashboard', path: '/', element: Dashboard, private: true },
 
   {
     title: 'Login',

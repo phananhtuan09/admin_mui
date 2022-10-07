@@ -152,7 +152,7 @@ export const ApiClient = {
       .catch((error) => this.catchErrorRequest(error));
     return response;
   },
-  async postFile(url = '', query = {}, fileKey = '', file: any) {
+  async postFile(url = '', query = {}, fileKey = '', file = '') {
     const stringQuery = this.getStringQuery(query);
     const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`;
     const config = {

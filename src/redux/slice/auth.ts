@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as AuthService from '@/apiServices/auth.service';
 
-import { userTypes, authTypes } from '@/interfaces/auth.interface';
+import { UserTypes, AuthTypes } from '@/interfaces/auth.interface';
 export const loginDispatch = createAsyncThunk(
   'auth/login',
-  async (loginForm: userTypes, { rejectWithValue }) => {
+  async (loginForm: UserTypes, { rejectWithValue }) => {
     const response = await AuthService.login(loginForm);
     if (response.message) {
       return rejectWithValue(response.message);
@@ -16,7 +16,7 @@ export const loginDispatch = createAsyncThunk(
 );
 export const registerDispatch = createAsyncThunk(
   'auth/register',
-  async (registerForm: userTypes, { rejectWithValue }) => {
+  async (registerForm: UserTypes, { rejectWithValue }) => {
     const response = await AuthService.register(registerForm);
 
     if (response.message) {
@@ -26,7 +26,7 @@ export const registerDispatch = createAsyncThunk(
     }
   }
 );
-const initialState: authTypes = {
+const initialState: AuthTypes = {
   loading: false,
   userInfo: {},
   error: '',

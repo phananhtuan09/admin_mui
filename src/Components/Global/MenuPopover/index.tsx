@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 // material
-import { Popover } from '@mui/material'
-import { alpha, styled, SxProps } from '@mui/material/styles'
-import React from 'react'
+import { Popover } from '@mui/material';
+import { alpha, styled, SxProps } from '@mui/material/styles';
+import React from 'react';
 // ----------------------------------------------------------------------
 
 const ArrowStyle = styled('span')(({ theme }) => ({
@@ -20,20 +20,23 @@ const ArrowStyle = styled('span')(({ theme }) => ({
     borderRight: `solid 1px ${alpha(theme.palette.grey[500], 0.12)}`,
     borderBottom: `solid 1px ${alpha(theme.palette.grey[500], 0.12)}`,
   },
-}))
+}));
 
 // ----------------------------------------------------------------------
 
-MenuPopover.propTypes = {
-  children: PropTypes.node.isRequired,
-  sx: PropTypes.object,
+interface OriginProps {
+  vertical: 'bottom' | 'center' | 'top' | number;
+  horizontal: 'center' | 'left' | 'right' | number;
 }
 interface MenuPopoverTypes {
-  children?: React.ReactNode
-  sx?: SxProps
-  open?: boolean
-  anchorEl?: any
-  onClose?: any
+  children?: React.ReactNode;
+  sx?: SxProps;
+  open?: boolean;
+  anchorEl?: any;
+  onClose?: any;
+  anchorOrigin?: OriginProps;
+  transformOrigin?: OriginProps;
+  arrow?: string;
 }
 export default function MenuPopover({
   children,
@@ -59,5 +62,5 @@ export default function MenuPopover({
 
       {children}
     </Popover>
-  )
+  );
 }

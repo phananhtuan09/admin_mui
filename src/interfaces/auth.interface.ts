@@ -1,4 +1,4 @@
-export interface userTypes {
+export interface UserTypes {
   username?: string;
   password?: string;
   passwordConfirm?: string;
@@ -15,9 +15,9 @@ export interface userTypes {
   accessToken?: string;
   refreshToken?: string;
 }
-export interface authTypes {
+export interface AuthTypes {
   loading: boolean;
-  userInfo: userTypes;
+  userInfo: UserTypes;
   error: unknown;
   isAuthenticated: boolean;
 }
