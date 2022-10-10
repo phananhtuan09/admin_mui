@@ -79,8 +79,19 @@ interface GreyProps {
   50056: string;
   50080: string;
 }
+export type ColorSelection =
+  | 'primary'
+  | 'secondary'
+  | 'info'
+  | 'success'
+  | 'warning'
+  | 'error';
+interface CommonProps {
+  black: string;
+  white: string;
+}
 export interface PaletteProps {
-  common: object;
+  common: CommonProps;
   primary: ColorProps;
   secondary: ColorProps;
   info: ColorProps;
@@ -116,6 +127,28 @@ export interface typographyProps {
   overline: CSSProperties;
   button: CSSProperties;
 }
+interface Easing {
+  easeInOut: string;
+  easeOut: string;
+  easeIn: string;
+  sharp: string;
+}
+interface Duration {
+  shortest: number;
+  shorter: number;
+  short: number;
+  standard: number;
+  complex: number;
+  enteringScreen: number;
+  leavingScreen: number;
+}
+
+export interface Transitions {
+  easing: Easing;
+  duration: Duration;
+  create: Function;
+}
+export type Theme = ThemeOptions;
 export interface ThemeOptions {
   breakpoints: Breakpoints;
   shape: Shape;
@@ -123,7 +156,7 @@ export interface ThemeOptions {
   palette: PaletteProps;
   shadows?: unknown;
   customShadows: CustomShadows;
-  transitions?: unknown;
+  transitions: Transitions;
   components?: Record<string, any>;
   typography: Record<string, any>;
   zIndex?: Record<string, number>;

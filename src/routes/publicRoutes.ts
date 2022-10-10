@@ -1,16 +1,16 @@
-import React, { FC } from 'react';
+import { RouteProps } from '@/interfaces/routeProps.interface';
+import React from 'react';
 const Login = React.lazy(() => import('@/Pages/Admin/Login'));
 const Register = React.lazy(() => import('@/Pages/Admin/Register'));
 const Dashboard = React.lazy(() => import('@/Pages/Admin/Dashboard'));
-const User = React.lazy(() => import('@/Pages/Admin/User'));
+const Users = React.lazy(() => import('@/Pages/Admin/Users'));
 const Product = React.lazy(() => import('@/Pages/Admin/Product'));
 const Blog = React.lazy(() => import('@/Pages/Admin/Blog'));
 
 const NullLayout = React.lazy(() => import('@/Layout/NullLayout'));
-import { RouteProps } from '@/interfaces/routeProps.interface';
 
 export const publicRoutes: RouteProps[] = [
-  { title: 'Dashboard', path: '/', element: Dashboard, private: true },
+  { title: 'Dashboard', path: '/dashboard', element: Dashboard, private: true },
 
   {
     title: 'Login',
@@ -29,7 +29,7 @@ export const publicRoutes: RouteProps[] = [
   {
     title: 'User',
     path: '/user',
-    element: User,
+    element: Users,
     private: true,
   },
   {

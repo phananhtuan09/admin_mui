@@ -23,7 +23,7 @@ interface CustomTheme {
   palette: PaletteProps;
   shape: Object;
   //typography:
-  //shadows: string[];
+  //shadows: Record<string, any>;
   customShadows: Object;
 }
 
