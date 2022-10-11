@@ -1,6 +1,5 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Props } from '@/interfaces/childProps.interface';
-import { useState } from 'react';
 
 // material
 import { styled } from '@mui/material/styles';

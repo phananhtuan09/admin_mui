@@ -4,8 +4,8 @@ import palette from './palette';
 
 // -------------------------------------------------------------------
 
-export type greyKey = keyof typeof palette.grey;
-const LIGHT_MODE: string = palette.grey[500 as greyKey];
+export type GreyKey = keyof typeof palette.grey;
+const LIGHT_MODE: string = palette.grey[500 as GreyKey];
 const createShadow = (color: string) => {
   const transparent1 = alpha(color, 0.2);
   const transparent2 = alpha(color, 0.14);

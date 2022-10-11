@@ -1,2 +1,1 @@
-import useResponsive from './useResponsive';
-export { useResponsive };
+export { default as useResponsive } from './useResponsive';

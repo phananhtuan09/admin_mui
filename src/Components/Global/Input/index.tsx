@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-import './Input.scss'
+import './Input.scss';
 function Input({
   disabled = false,
   readOnly = false,
@@ -18,7 +18,7 @@ function Input({
       />
       {error && <p className="error-text">{error}</p>}
     </>
-  )
+  );
 }
 
-export default Input
+export default Input;

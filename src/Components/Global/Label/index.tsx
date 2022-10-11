@@ -1,10 +1,10 @@
 // @mui
 import { Box } from '@mui/material';
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled, SxProps, useTheme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 import { ColorSelection, Theme } from '@/theme/theme.interface';
-import { SxProps, useTheme } from '@mui/material/styles';
+
 type Variant = 'filled' | 'outlined' | 'ghost';
 interface OwnerStateProps {
   color: ColorSelection;
@@ -18,20 +18,20 @@ const RootStyle = styled('span')(({ theme, ownerState }: RootStyleProps) => {
   const isLight = theme.palette.mode === 'light';
   const { color, variant } = ownerState;
 
-  const styleFilled = (color: ColorSelection) => ({
-    color: theme.palette[color].contrastText,
-    backgroundColor: theme.palette[color].main,
+  const styleFilled = (colorFilled: ColorSelection) => ({
+    color: theme.palette[colorFilled].contrastText,
+    backgroundColor: theme.palette[colorFilled].main,
   });
 
-  const styleOutlined = (color: ColorSelection) => ({
-    color: theme.palette[color].main,
+  const styleOutlined = (colorOutlined: ColorSelection) => ({
+    color: theme.palette[colorOutlined].main,
     backgroundColor: 'transparent',
-    border: `1px solid ${theme.palette[color].main}`,
+    border: `1px solid ${theme.palette[colorOutlined].main}`,
   });
 
-  const styleGhost = (color: ColorSelection) => ({
-    color: theme.palette[color][isLight ? 'dark' : 'light'],
-    backgroundColor: alpha(theme.palette[color].main, 0.16),
+  const styleGhost = (colorGhost: ColorSelection) => ({
+    color: theme.palette[colorGhost][isLight ? 'dark' : 'light'],
+    backgroundColor: alpha(theme.palette[colorGhost].main, 0.16),
   });
 
   return {

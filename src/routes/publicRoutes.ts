@@ -4,12 +4,13 @@ const Login = React.lazy(() => import('@/Pages/Admin/Login'));
 const Register = React.lazy(() => import('@/Pages/Admin/Register'));
 const Dashboard = React.lazy(() => import('@/Pages/Admin/Dashboard'));
 const Users = React.lazy(() => import('@/Pages/Admin/Users'));
-const Product = React.lazy(() => import('@/Pages/Admin/Product'));
+const Products = React.lazy(() => import('@/Pages/Admin/Products'));
 const Blog = React.lazy(() => import('@/Pages/Admin/Blog'));
 
 const NullLayout = React.lazy(() => import('@/Layout/NullLayout'));
 
 export const publicRoutes: RouteProps[] = [
+  { title: 'Dashboard', path: '/', element: Dashboard, private: true },
   { title: 'Dashboard', path: '/dashboard', element: Dashboard, private: true },
 
   {
@@ -28,19 +29,19 @@ export const publicRoutes: RouteProps[] = [
   },
   {
     title: 'User',
-    path: '/user',
+    path: '/users',
     element: Users,
     private: true,
   },
   {
     title: 'Product',
     path: '/products',
-    element: Product,
+    element: Products,
     private: false,
   },
   {
     title: 'Blog',
-    path: '/blog',
+    path: '/blogs',
     element: Blog,
     private: false,
   },

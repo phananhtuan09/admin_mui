@@ -1,8 +1,8 @@
 // icons
 import { Icon } from '@iconify/react';
 // @mui
-import { Box } from '@mui/material';
-import { SxProps } from '@mui/material';
+
+import { Box, SxProps } from '@mui/material';
 // ----------------------------------------------------------------------
 
 interface IconifyProps {

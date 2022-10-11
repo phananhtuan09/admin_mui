@@ -29,7 +29,7 @@ const LANGS = [
 
 export default function LanguagePopover() {
   const anchorRef = useRef(null);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleOpen = () => {
     setOpen(true);

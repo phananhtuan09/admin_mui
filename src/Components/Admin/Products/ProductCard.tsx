@@ -1,13 +1,12 @@
-import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { Box, Card, Link, Typography, Stack } from '@mui/material';
+import { Box, Card, Link, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
 // components
-import Label from '@/Components/Global/Label';
 import { ColorPreview } from '@/Components/Global/Color-Utils';
+import Label from '@/Components/Global/Label';
 
 // ----------------------------------------------------------------------
 

@@ -1,11 +1,11 @@
 // @mui
-import { Card, Typography } from '@mui/material';
-import { alpha, styled } from '@mui/material/styles';
+import { Card, SxProps, Typography } from '@mui/material';
+//import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/system';
 // utils
-import { fShortenNumber } from '../../../utils/formatNumber';
+import { fShortenNumber } from '@/utils/formatNumber';
 // components
 import Iconify from '@/Components/Global/Iconify';
-import { SxProps } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

@@ -1,20 +1,18 @@
-import PropTypes from 'prop-types'
 // material
-import { alpha, styled } from '@mui/material/styles'
-import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material'
+import { AppBar, Box, IconButton, Stack, Toolbar } from '@mui/material';
+import { styled } from '@mui/material/styles';
 // components
-import Iconify from '@/Components/Global/Iconify'
+import Iconify from '@/Components/Global/Iconify';
 //
-import Searchbar from './SearchBar'
-import AccountPopover from './AccountPopover'
-import LanguagePopover from './LanguagePopover'
-import NotificationsPopover from './NotificationsPopover'
-import React from 'react'
+import AccountPopover from './AccountPopover';
+import LanguagePopover from './LanguagePopover';
+import NotificationsPopover from './NotificationsPopover';
+import Searchbar from './SearchBar';
 // ----------------------------------------------------------------------
 
-const DRAWER_WIDTH = 280
-const APPBAR_MOBILE = 64
-const APPBAR_DESKTOP = 92
+const DRAWER_WIDTH = 280;
+const APPBAR_MOBILE = 64;
+const APPBAR_DESKTOP = 92;
 
 const RootStyle = styled(AppBar)(({ theme }) => ({
   boxShadow: 'none',
@@ -24,7 +22,7 @@ const RootStyle = styled(AppBar)(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     width: `calc(100% - ${DRAWER_WIDTH + 1}px)`,
   },
-}))
+}));
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   minHeight: APPBAR_MOBILE,
@@ -32,15 +30,13 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
     minHeight: APPBAR_DESKTOP,
     padding: theme.spacing(0, 5),
   },
-}))
+}));
 
 // ----------------------------------------------------------------------
-
-Navbar.propTypes = {
-  onOpenSidebar: PropTypes.func,
+interface NavbarProps {
+  onOpenSidebar: () => void;
 }
-
-export default function Navbar({ onOpenSidebar }: any) {
+export default function Navbar({ onOpenSidebar }: NavbarProps) {
   return (
     <RootStyle>
       <ToolbarStyle>
@@ -65,5 +61,5 @@ export default function Navbar({ onOpenSidebar }: any) {
         </Stack>
       </ToolbarStyle>
     </RootStyle>
-  )
+  );
 }

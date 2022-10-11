@@ -39,49 +39,46 @@ interface AppTasksProps {
   list: Array<ListProps>;
   subheader?: string;
 }
-export default function AppTasks({
-  title,
-  subheader,
-  list,
-  ...other
-}: AppTasksProps) {
-  const { control } = useForm({
-    defaultValues: {
-      taskCompleted: ['2'],
-    },
-  });
-
+function MoreMenuButton({
+  actions,
+  open,
+  onOpen,
+  onClose,
+}: MoreMenuButtonProps) {
   return (
-    <Card {...other}>
-      <CardHeader title={title} subheader={subheader} />
-      <Controller
-        name="taskCompleted"
-        control={control}
-        render={({ field }) => {
-          const onSelected = (task: string) =>
-            field.value.includes(task)
-              ? field.value.filter((value) => value !== task)
-              : [...field.value, task];
+    <>
+      <IconButton
+        size="large"
+        color="inherit"
+        sx={{ opacity: 0.48 }}
+        onClick={(e) => onOpen(e)}
+      >
+        <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
+      </IconButton>
 
-          return (
-            <>
-              {list.map((task) => (
-                <TaskItem
-                  key={task.id}
-                  task={task}
-                  checked={field.value.includes(task.id)}
-                  onChange={() => field.onChange(onSelected(task.id))}
-                />
-              ))}
-            </>
-          );
+      <MenuPopover
+        open={Boolean(open)}
+        anchorEl={open}
+        onClose={onClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        arrow="right-top"
+        sx={{
+          mt: -0.5,
+          width: 'auto',
+          '& .MuiMenuItem-root': {
+            px: 1,
+            typography: 'body2',
+            borderRadius: 0.75,
+            '& svg': { mr: 2, width: 20, height: 20 },
+          },
         }}
-      />
-    </Card>
+      >
+        {actions}
+      </MenuPopover>
+    </>
   );
 }
-
-// ----------------------------------------------------------------------
 
 function TaskItem({ task, checked, onChange }: TaskItemProps) {
   const [open, setOpen] = useState<Element | null>(null);
@@ -165,46 +162,48 @@ function TaskItem({ task, checked, onChange }: TaskItemProps) {
     </Stack>
   );
 }
+export default function AppTasks({
+  title,
+  subheader,
+  list,
+  ...other
+}: AppTasksProps) {
+  const { control } = useForm({
+    defaultValues: {
+      taskCompleted: ['2'],
+    },
+  });
+
+  return (
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} />
+      <Controller
+        name="taskCompleted"
+        control={control}
+        render={({ field }) => {
+          const onSelected = (task: string) =>
+            field.value.includes(task)
+              ? field.value.filter((value) => value !== task)
+              : [...field.value, task];
+
+          return (
+            <>
+              {list.map((task) => (
+                <TaskItem
+                  key={task.id}
+                  task={task}
+                  checked={field.value.includes(task.id)}
+                  onChange={() => field.onChange(onSelected(task.id))}
+                />
+              ))}
+            </>
+          );
+        }}
+      />
+    </Card>
+  );
+}
 
 // ----------------------------------------------------------------------
 
-function MoreMenuButton({
-  actions,
-  open,
-  onOpen,
-  onClose,
-}: MoreMenuButtonProps) {
-  return (
-    <>
-      <IconButton
-        size="large"
-        color="inherit"
-        sx={{ opacity: 0.48 }}
-        onClick={(e) => onOpen(e)}
-      >
-        <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
-      </IconButton>
-
-      <MenuPopover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={onClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        arrow="right-top"
-        sx={{
-          mt: -0.5,
-          width: 'auto',
-          '& .MuiMenuItem-root': {
-            px: 1,
-            typography: 'body2',
-            borderRadius: 0.75,
-            '& svg': { mr: 2, width: 20, height: 20 },
-          },
-        }}
-      >
-        {actions}
-      </MenuPopover>
-    </>
-  );
-}
+// ----------------------------------------------------------------------

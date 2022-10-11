@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 // material
 import { Popover } from '@mui/material';
 import { alpha, styled, SxProps } from '@mui/material/styles';

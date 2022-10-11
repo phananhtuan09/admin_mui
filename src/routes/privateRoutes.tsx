@@ -1,17 +1,16 @@
-import { Props } from '@/interfaces/childProps.interface'
-import { Navigate } from 'react-router-dom'
-import React from 'react'
+import { Props } from '@/interfaces/childProps.interface';
+import { Navigate } from 'react-router-dom';
 const PrivateRoute = ({ children }: Props) => {
-  let user = localStorage.getItem('userInfo') || ''
+  const user = localStorage.getItem('userInfo') || '';
   if (user) {
-    return <>{children}</>
+    return <>{children}</>;
   } else {
     return (
       <>
         <Navigate to="/login" />
       </>
-    )
+    );
   }
-}
+};
 
-export default PrivateRoute
+export default PrivateRoute;

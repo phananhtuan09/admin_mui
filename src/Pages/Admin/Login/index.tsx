@@ -1,124 +1,119 @@
-import Input from '@/Components/Global/Input';
-import React, { useEffect } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import './Login.scss';
+import { Link as RouterLink } from 'react-router-dom';
+// @mui
+import { styled } from '@mui/material/styles';
+import { Card, Link, Container, Typography } from '@mui/material';
+// hooks
+import { useResponsive } from '@/customHooks';
+// components
+import Page from '@/Components/Global/Page';
+import Logo from '@/Components/Global/Logo';
+// sections
+import { LoginForm } from '@/Components/Admin/Auth/Login';
+import AuthSocial from '@/Components/Admin/Auth/AuthSocial';
 
-import { useAppSelector, useAppDispatch } from '@/redux/store';
-import InputForm from '@/interfaces/inputForm.interface';
-import { UserTypes } from '@/interfaces/auth.interface';
-import { loginDispatch, clearState } from '@/redux/slice/auth';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
+// ----------------------------------------------------------------------
 
-function Login() {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { error, loading, isAuthenticated } = useAppSelector(
-    (state) => state.auth
-  );
-  const optionsToast = {
-    position: toast.POSITION.TOP_CENTER,
-    autoClose: 1000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-  };
+const RootStyle = styled('div')(({ theme }) => ({
+  [theme.breakpoints.up('md')]: {
+    display: 'flex',
+  },
+}));
 
-  const formik = useFormik({
-    initialValues: {
-      username: '',
-      password: '',
-    },
-    validationSchema: Yup.object({
-      username: Yup.string()
-        .max(15, 'Must be 15 characters or less')
-        .required('Required'),
-      password: Yup.string()
-        .min(1, 'Must be 1 characters or more')
-        .max(20, 'Must be 20 characters or less')
-        .required('Required'),
-      // email: Yup.string().email('Invalid email address').required('Required'),
-    }),
-    onSubmit: (loginInfo: UserTypes) => {
-      //alert(JSON.stringify(values, null, 2))
-      dispatch(loginDispatch(loginInfo));
-    },
-  });
-  const inputValues: InputForm[] = [
-    {
-      id: 'username',
-      name: 'username',
-      type: 'text',
-      onChange: formik.handleChange,
-      onBlur: formik.handleBlur,
-      value: formik.values.username || '',
-      error: formik.errors.username || '',
-    },
-    {
-      id: 'password',
-      name: 'password',
-      type: 'password',
-      onChange: formik.handleChange,
-      onBlur: formik.handleBlur,
-      value: formik.values.password || '',
-      error: formik.errors.password || '',
-    },
-  ];
-  useEffect(() => {
-    if (error) {
-      toast.error(<>{error}</>, { ...optionsToast, type: toast.TYPE.ERROR });
-      dispatch(clearState());
-    }
-    if (isAuthenticated) {
-      toast.success('Login Successful!', {
-        ...optionsToast,
-        type: toast.TYPE.SUCCESS,
-      });
-      dispatch(clearState());
-      setTimeout(() => {
-        navigate('/profile');
-      }, 1000);
-    }
-    return () => {
-      dispatch(clearState());
-    };
-  }, [dispatch, isAuthenticated, error]);
+const HeaderStyle = styled('header')(({ theme }) => ({
+  top: 0,
+  zIndex: 9,
+  lineHeight: 0,
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  position: 'absolute',
+  padding: theme.spacing(3),
+  justifyContent: 'space-between',
+  [theme.breakpoints.up('md')]: {
+    alignItems: 'flex-start',
+    padding: theme.spacing(7, 5, 0, 7),
+  },
+}));
+
+const SectionStyle = styled(Card)(({ theme }) => ({
+  width: '100%',
+  maxWidth: 464,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  margin: theme.spacing(2, 0, 2, 2),
+}));
+
+const ContentStyle = styled('div')(({ theme }) => ({
+  maxWidth: 480,
+  margin: 'auto',
+  minHeight: '100vh',
+  display: 'flex',
+  justifyContent: 'center',
+  flexDirection: 'column',
+  padding: theme.spacing(12, 0),
+}));
+
+// ----------------------------------------------------------------------
+
+export default function Login() {
+  const smUp = useResponsive('up', 'sm');
+
+  const mdUp = useResponsive('up', 'md');
+
   return (
-    <>
-      <h1>Login</h1>
-      <form onSubmit={formik.handleSubmit}>
-        {inputValues.map((value) => (
-          <div className="form-group" key={value.id}>
-            <label className="form-label" htmlFor={value.id}>
-              {value.id[0].toLocaleUpperCase() + value.id.slice(1)}
-            </label>
-            <Input {...value} />
-          </div>
-        ))}
+    <Page title="Login">
+      <RootStyle>
+        <HeaderStyle>
+          <Logo />
 
-        <button type="submit" className="submit_btn " disabled={loading}>
-          Submit
-        </button>
-      </form>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+          {smUp && (
+            <Typography variant="body2" sx={{ mt: { md: -2 } }}>
+              Don’t have an account? {''}
+              <Link variant="subtitle2" component={RouterLink} to="/register">
+                Get started
+              </Link>
+            </Typography>
+          )}
+        </HeaderStyle>
 
-      <ToastContainer />
-    </>
+        {mdUp && (
+          <SectionStyle>
+            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+              Hi, Welcome Back
+            </Typography>
+            <img
+              src="https://minimal-kit-react.vercel.app/static/illustrations/illustration_login.png"
+              alt="login"
+            />
+          </SectionStyle>
+        )}
+
+        <Container maxWidth="sm">
+          <ContentStyle>
+            <Typography variant="h4" gutterBottom>
+              Sign in to Minimal
+            </Typography>
+
+            <Typography sx={{ color: 'text.secondary', mb: 5 }}>
+              Enter your details below.
+            </Typography>
+
+            <AuthSocial />
+
+            <LoginForm />
+
+            {!smUp && (
+              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+                Don’t have an account?{' '}
+                <Link variant="subtitle2" component={RouterLink} to="/register">
+                  Get started
+                </Link>
+              </Typography>
+            )}
+          </ContentStyle>
+        </Container>
+      </RootStyle>
+    </Page>
   );
 }
-
-export default Login;

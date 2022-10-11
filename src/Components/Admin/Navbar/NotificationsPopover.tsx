@@ -1,31 +1,30 @@
-import PropTypes from 'prop-types'
-import { set, sub } from 'date-fns'
-import { noCase } from 'change-case'
-import { faker } from '@faker-js/faker'
-import { useState, useRef } from 'react'
+import { faker } from '@faker-js/faker';
+import { noCase } from 'change-case';
+import { set, sub } from 'date-fns';
+import { useRef, useState } from 'react';
 // @mui
 import {
-  Box,
-  List,
-  Badge,
-  Button,
   Avatar,
-  Tooltip,
+  Badge,
+  Box,
+  Button,
   Divider,
-  Typography,
   IconButton,
-  ListItemText,
-  ListSubheader,
+  List,
   ListItemAvatar,
   ListItemButton,
-} from '@mui/material'
+  ListItemText,
+  ListSubheader,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 // utils
-import { fToNow } from '@/utils/formatTime'
+import { fToNow } from '@/utils/formatTime';
 // components
-import Iconify from '@/Components/Global/Iconify'
-import Scrollbar from '@/Components/Global/Scrollbar'
-import MenuPopover from '@/Components/Global/MenuPopover'
-import React from 'react'
+import Iconify from '@/Components/Global/Iconify';
+import MenuPopover from '@/Components/Global/MenuPopover';
+import Scrollbar from '@/Components/Global/Scrollbar';
+
 // ----------------------------------------------------------------------
 
 const NOTIFICATIONS = [
@@ -75,26 +74,141 @@ const NOTIFICATIONS = [
     createdAt: sub(new Date(), { days: 3, hours: 3, minutes: 30 }),
     isUnRead: false,
   },
-]
+];
+interface NotificationProps {
+  id: string;
+  title: string;
+  description: string;
+  avatar: string | null;
+  type: string;
+  createdAt: Date;
+  isUnRead: boolean;
+}
+function renderContent(notification: NotificationProps) {
+  const title = (
+    <Typography variant="subtitle2">
+      {notification.title}
+      <Typography
+        component="span"
+        variant="body2"
+        sx={{ color: 'text.secondary' }}
+      >
+        &nbsp; {noCase(notification.description)}
+      </Typography>
+    </Typography>
+  );
+
+  if (notification.type === 'order_placed') {
+    return {
+      avatar: (
+        <img
+          alt={notification.title}
+          src="	https://minimal-kit-react.vercel.app/static/icons/ic_notification_package.svg"
+        />
+      ),
+      title,
+    };
+  }
+  if (notification.type === 'order_shipped') {
+    return {
+      avatar: (
+        <img
+          alt={notification.title}
+          src="https://minimal-kit-react.vercel.app/static/icons/ic_notification_shipping.svg"
+        />
+      ),
+      title,
+    };
+  }
+  if (notification.type === 'mail') {
+    return {
+      avatar: (
+        <img
+          alt={notification.title}
+          src="https://minimal-kit-react.vercel.app/static/icons/ic_notification_mail.svg"
+        />
+      ),
+      title,
+    };
+  }
+  if (notification.type === 'chat_message') {
+    return {
+      avatar: (
+        <img
+          alt={notification.title}
+          src="https://minimal-kit-react.vercel.app/static/icons/ic_notification_chat.svg"
+        />
+      ),
+      title,
+    };
+  }
+  return {
+    avatar: notification.avatar ? (
+      <img alt={notification.title} src={notification.avatar} />
+    ) : null,
+    title,
+  };
+}
+
+function NotificationItem({ notification }: any) {
+  const { avatar, title } = renderContent(notification);
+
+  return (
+    <ListItemButton
+      sx={{
+        py: 1.5,
+        px: 2.5,
+        mt: '1px',
+        ...(notification.isUnRead && {
+          bgcolor: 'action.selected',
+        }),
+      }}
+    >
+      <ListItemAvatar>
+        <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
+      </ListItemAvatar>
+      <ListItemText
+        primary={title}
+        secondary={
+          <Typography
+            variant="caption"
+            sx={{
+              mt: 0.5,
+              display: 'flex',
+              alignItems: 'center',
+              color: 'text.disabled',
+            }}
+          >
+            <Iconify
+              icon="eva:clock-outline"
+              sx={{ mr: 0.5, width: 16, height: 16 }}
+            />
+            {fToNow(notification.createdAt)}
+          </Typography>
+        }
+      />
+    </ListItemButton>
+  );
+}
 
 export default function NotificationsPopover() {
-  const anchorRef = useRef(null)
+  const anchorRef = useRef(null);
 
-  const [notifications, setNotifications] = useState(NOTIFICATIONS)
+  const [notifications, setNotifications] = useState(NOTIFICATIONS);
 
   const totalUnRead = notifications.filter(
     (item) => item.isUnRead === true
-  ).length
+  ).length;
 
-  const [open, setOpen] = useState(null)
+  const [open, setOpen] = useState(null);
 
   const handleOpen = (event: any) => {
-    setOpen(event.currentTarget)
-  }
+    setOpen(event.currentTarget);
+  };
 
   const handleClose = () => {
-    setOpen(null)
-  }
+    setOpen(null);
+  };
 
   const handleMarkAllAsRead = () => {
     setNotifications(
@@ -102,8 +216,8 @@ export default function NotificationsPopover() {
         ...notification,
         isUnRead: false,
       }))
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -192,128 +306,9 @@ export default function NotificationsPopover() {
         </Box>
       </MenuPopover>
     </>
-  )
+  );
 }
 
 // ----------------------------------------------------------------------
 
-NotificationItem.propTypes = {
-  notification: PropTypes.shape({
-    createdAt: PropTypes.instanceOf(Date),
-    id: PropTypes.string,
-    isUnRead: PropTypes.bool,
-    title: PropTypes.string,
-    description: PropTypes.string,
-    type: PropTypes.string,
-    avatar: PropTypes.any,
-  }),
-}
-
-function NotificationItem({ notification }: any) {
-  const { avatar, title } = renderContent(notification)
-
-  return (
-    <ListItemButton
-      sx={{
-        py: 1.5,
-        px: 2.5,
-        mt: '1px',
-        ...(notification.isUnRead && {
-          bgcolor: 'action.selected',
-        }),
-      }}
-    >
-      <ListItemAvatar>
-        <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
-      </ListItemAvatar>
-      <ListItemText
-        primary={title}
-        secondary={
-          <Typography
-            variant="caption"
-            sx={{
-              mt: 0.5,
-              display: 'flex',
-              alignItems: 'center',
-              color: 'text.disabled',
-            }}
-          >
-            <Iconify
-              icon="eva:clock-outline"
-              sx={{ mr: 0.5, width: 16, height: 16 }}
-            />
-            {fToNow(notification.createdAt)}
-          </Typography>
-        }
-      />
-    </ListItemButton>
-  )
-}
-
 // ----------------------------------------------------------------------
-
-function renderContent(notification: any) {
-  const title = (
-    <Typography variant="subtitle2">
-      {notification.title}
-      <Typography
-        component="span"
-        variant="body2"
-        sx={{ color: 'text.secondary' }}
-      >
-        &nbsp; {noCase(notification.description)}
-      </Typography>
-    </Typography>
-  )
-
-  if (notification.type === 'order_placed') {
-    return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="	https://minimal-kit-react.vercel.app/static/icons/ic_notification_package.svg"
-        />
-      ),
-      title,
-    }
-  }
-  if (notification.type === 'order_shipped') {
-    return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="https://minimal-kit-react.vercel.app/static/icons/ic_notification_shipping.svg"
-        />
-      ),
-      title,
-    }
-  }
-  if (notification.type === 'mail') {
-    return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="https://minimal-kit-react.vercel.app/static/icons/ic_notification_mail.svg"
-        />
-      ),
-      title,
-    }
-  }
-  if (notification.type === 'chat_message') {
-    return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="https://minimal-kit-react.vercel.app/static/icons/ic_notification_chat.svg"
-        />
-      ),
-      title,
-    }
-  }
-  return {
-    avatar: notification.avatar ? (
-      <img alt={notification.title} src={notification.avatar} />
-    ) : null,
-    title,
-  }
-}

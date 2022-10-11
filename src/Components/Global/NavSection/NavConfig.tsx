@@ -14,7 +14,7 @@ const navConfig = [
   },
   {
     title: 'user',
-    path: '/user',
+    path: '/users',
     icon: getIcon('eva:people-fill'),
   },
   {
@@ -24,7 +24,7 @@ const navConfig = [
   },
   {
     title: 'blog',
-    path: '/blog',
+    path: '/blogs',
     icon: getIcon('eva:file-text-fill'),
   },
   {

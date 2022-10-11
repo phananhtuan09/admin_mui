@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 // material
 import { CssBaseline } from '@mui/material';
@@ -16,14 +15,11 @@ import typography from './typography';
 import { Props } from '@/interfaces/childProps.interface';
 import { PaletteProps } from './theme.interface';
 
-ThemeProvider.propTypes = {
-  children: PropTypes.node,
-};
 interface CustomTheme {
   palette: PaletteProps;
   shape: Object;
-  //typography:
-  //shadows: Record<string, any>;
+  typography: any;
+  shadows: any;
   customShadows: Object;
 }
 

@@ -1,19 +1,22 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
-import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom'
+import { useState } from 'react';
+import {
+  matchPath,
+  NavLink as RouterLink,
+  useLocation,
+} from 'react-router-dom';
 // material
-import { alpha, useTheme, styled } from '@mui/material/styles'
 import {
   Box,
-  List,
   Collapse,
-  ListItemText,
-  ListItemIcon,
+  List,
   ListItemButton,
-} from '@mui/material'
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
+import { alpha, styled, useTheme, Theme } from '@mui/material/styles';
 //
-import Iconify from '../Iconify'
-import React from 'react'
+import Iconify from '../Iconify';
+
 // ----------------------------------------------------------------------
 // interface ListItem {
 //   key?: string
@@ -21,23 +24,15 @@ import React from 'react'
 //   to?: string
 //   sx?: any
 // }
-interface ListItemStyleProps {
-  key?: any
-  component?: any
-  to?: any
-  sx?: any
-  onClick?: any
-  children?: any | any[]
-}
 const ListItemStyle = styled(({ children, ...props }: ListItemStyleProps) => {
   if (children) {
     return (
       <ListItemButton disableGutters {...props}>
         {children}
       </ListItemButton>
-    )
+    );
   }
-  return <ListItemButton disableGutters {...props} />
+  return <ListItemButton disableGutters {...props} />;
 })(({ theme }) => ({
   ...theme.typography.body2,
   height: 48,
@@ -45,7 +40,7 @@ const ListItemStyle = styled(({ children, ...props }: ListItemStyleProps) => {
   textTransform: 'capitalize',
   color: theme.palette.text.secondary,
   borderRadius: theme.shape.borderRadius,
-}))
+}));
 
 const ListItemIconStyle = styled(ListItemIcon)({
   width: 22,
@@ -54,50 +49,55 @@ const ListItemIconStyle = styled(ListItemIcon)({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-})
+});
+//--------------------------------------------------------------------
+interface ListItemStyleProps {
+  key?: any;
+  component?: any;
+  to?: any;
+  sx?: any;
+  onClick?: any;
+  children?: any | any[];
+}
 
 // ----------------------------------------------------------------------
 
-NavItem.propTypes = {
-  item: PropTypes.object,
-  active: PropTypes.func,
-}
-interface NavItem {
-  title?: string
-  path?: string
-  icon?: any
-  info?: string
-  children?: any
+interface NavItemInterface {
+  title?: string;
+  path?: string;
+  icon?: any;
+  info?: string;
+  children?: any;
 }
 interface NavItemProps {
-  item: NavItem
-  active: Function
+  item: NavItemInterface;
+  active: Function;
 }
 function NavItem({ item, active }: NavItemProps) {
-  const theme = useTheme()
+  const customTheme: Theme = useTheme();
 
-  const isActiveRoot = active(item.path)
+  const isActiveRoot = active(item.path);
 
-  const { title, path, icon, info, children } = item
-  const [open, setOpen] = useState<boolean>(isActiveRoot)
+  const { title, path, icon, info, children } = item;
+  const [open, setOpen] = useState<boolean>(isActiveRoot);
 
   const handleOpen = () => {
-    setOpen((prev: boolean) => !prev)
-  }
+    setOpen((prev: boolean) => !prev);
+  };
 
   const activeRootStyle = {
     color: 'primary.main',
     fontWeight: 'fontWeightMedium',
     bgcolor: alpha(
-      theme.palette.primary.main,
-      theme.palette.action.selectedOpacity
+      customTheme.palette.primary.main,
+      customTheme.palette.action.selectedOpacity
     ),
-  }
+  };
 
   const activeSubStyle = {
     color: 'text.primary',
     fontWeight: 'fontWeightMedium',
-  }
+  };
 
   if (children) {
     return (
@@ -123,15 +123,16 @@ function NavItem({ item, active }: NavItemProps) {
 
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            {children.map((item: NavItem) => {
-              const { title, path } = item
-              const isActiveSub = active(path)
+            {children.map((itemList: NavItemInterface) => {
+              const titleList = itemList.title;
+              const pathList = itemList.path;
+              const isActiveSub = active(path);
 
               return (
                 <ListItemStyle
-                  key={title}
+                  key={titleList}
                   component={RouterLink}
-                  to={path}
+                  to={pathList}
                   sx={{
                     ...(isActiveSub && activeSubStyle),
                   }}
@@ -156,14 +157,14 @@ function NavItem({ item, active }: NavItemProps) {
                       }}
                     />
                   </ListItemIconStyle>
-                  <ListItemText disableTypography primary={title} />
+                  <ListItemText disableTypography primary={titleList} />
                 </ListItemStyle>
-              )
+              );
             })}
           </List>
         </Collapse>
       </>
-    )
+    );
   }
 
   return (
@@ -178,26 +179,22 @@ function NavItem({ item, active }: NavItemProps) {
       <ListItemText disableTypography primary={title} />
       {info && info}
     </ListItemStyle>
-  )
-}
-
-NavSection.propTypes = {
-  navConfig: PropTypes.array,
+  );
 }
 
 export default function NavSection({ navConfig, ...other }: any) {
-  const { pathname } = useLocation()
+  const { pathname } = useLocation();
 
   const match = (path: string) =>
-    path ? !!matchPath({ path, end: false }, pathname) : false
+    path ? !!matchPath({ path, end: false }, pathname) : false;
 
   return (
     <Box {...other}>
       <List disablePadding sx={{ p: 1 }}>
-        {navConfig.map((item: NavItem) => (
+        {navConfig.map((item: NavItemInterface) => (
           <NavItem key={item.title} item={item} active={match} />
         ))}
       </List>
     </Box>
-  )
+  );
 }

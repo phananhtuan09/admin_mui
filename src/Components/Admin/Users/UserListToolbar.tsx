@@ -7,14 +7,16 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, Theme, useTheme } from '@mui/material/styles';
 // component
 import Iconify from '@/Components/Global/Iconify';
-import { Theme } from '@/theme/theme.interface';
-import { useTheme } from '@mui/material/styles';
+import { Theme as customThemeInterface } from '@/theme/theme.interface';
 
 // ----------------------------------------------------------------------
 
+interface SearchStyleProps {
+  theme: customThemeInterface;
+}
 interface RootStyleProps {
   theme: Theme;
 }
@@ -22,10 +24,10 @@ const RootStyle = styled(Toolbar)(({ theme }: RootStyleProps) => ({
   height: 96,
   display: 'flex',
   justifyContent: 'space-between',
-  padding: useTheme().spacing(0, 1, 0, 3),
+  padding: theme.spacing(0, 1, 0, 3),
 }));
 
-const SearchStyle = styled(OutlinedInput)(({ theme }: RootStyleProps) => ({
+const SearchStyle = styled(OutlinedInput)(({ theme }: SearchStyleProps) => ({
   width: 240,
   transition: theme.transitions.create(['box-shadow', 'width'], {
     easing: theme.transitions.easing.easeInOut,
@@ -33,7 +35,7 @@ const SearchStyle = styled(OutlinedInput)(({ theme }: RootStyleProps) => ({
   }),
   '&.Mui-focused': { width: 320, boxShadow: theme.customShadows.z8 },
   '& fieldset': {
-    borderWidth: `1px !important`,
+    borderWidth: '1px !important',
     borderColor: `${theme.palette.grey[500_32]} !important`,
   },
 }));
@@ -50,6 +52,7 @@ export default function UserListToolbar({
   filterName,
   onFilterName,
 }: UserListToolbarProps) {
+  const customTheme: any = useTheme();
   return (
     <RootStyle
       sx={{
@@ -58,7 +61,6 @@ export default function UserListToolbar({
           bgcolor: 'primary.lighter',
         }),
       }}
-      theme={useTheme()}
     >
       {numSelected > 0 ? (
         <Typography component="div" variant="subtitle1">
@@ -68,7 +70,7 @@ export default function UserListToolbar({
         <SearchStyle
           value={filterName}
           onChange={(e) => onFilterName(e)}
-          theme={useTheme()}
+          theme={customTheme}
           placeholder="Search user..."
           startAdornment={
             <InputAdornment position="start">

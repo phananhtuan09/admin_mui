@@ -9,7 +9,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 // mock
 import account from '@/Components/Global/_mock/account';
 import { useEffect } from 'react';
@@ -21,6 +21,7 @@ import NavSection from '@/Components/Global/NavSection';
 import Scrollbar from '@/Components/Global/Scrollbar';
 //
 import navConfig from '@/Components/Global/NavSection/NavConfig';
+import { Theme } from '@/theme/theme.interface';
 
 // ----------------------------------------------------------------------
 const DRAWER_WIDTH = 280;
@@ -31,25 +32,27 @@ const RootStyle = styled('div')(({ theme }) => ({
     width: DRAWER_WIDTH,
   },
 }));
-
-const AccountStyle = styled('div')(({ theme }: any) => ({
+interface AccountStyleProps {
+  theme: Theme;
+}
+const AccountStyle = styled('div')(({ theme }: AccountStyleProps) => ({
   display: 'flex',
   alignItems: 'center',
-  padding: theme.spacing(2, 2.5),
+  padding: useTheme().spacing(2, 2.5),
   borderRadius: Number(theme.shape.borderRadius) * 1.5,
   backgroundColor: theme.palette.grey[50012],
 }));
 
 // ----------------------------------------------------------------------
 
-interface sideBarProps {
+interface SideBarProps {
   isOpenSidebar: boolean;
   onCloseSidebar: () => void;
 }
 export default function Sidebar({
   isOpenSidebar,
   onCloseSidebar,
-}: sideBarProps) {
+}: SideBarProps) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
@@ -78,7 +81,7 @@ export default function Sidebar({
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none" component={RouterLink} to="#">
-          <AccountStyle>
+          <AccountStyle theme={useTheme()}>
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>

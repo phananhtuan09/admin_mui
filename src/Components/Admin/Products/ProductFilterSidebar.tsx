@@ -1,24 +1,23 @@
-import PropTypes from 'prop-types';
 // material
 import {
   Box,
-  Radio,
-  Stack,
   Button,
-  Drawer,
-  Rating,
-  Divider,
   Checkbox,
+  Divider,
+  Drawer,
+  FormControlLabel,
   FormGroup,
   IconButton,
-  Typography,
+  Radio,
   RadioGroup,
-  FormControlLabel,
+  Rating,
+  Stack,
+  Typography,
 } from '@mui/material';
 // components
+import { ColorManyPicker } from '@/Components/Global/Color-Utils';
 import Iconify from '@/Components/Global/Iconify';
 import Scrollbar from '@/Components/Global/Scrollbar';
-import { ColorManyPicker } from '@/Components/Global/Color-Utils';
 
 // ----------------------------------------------------------------------
 

@@ -4,7 +4,7 @@ import { GlobalStyles } from '@mui/material';
 import React from 'react';
 // ----------------------------------------------------------------------
 import { ThemeOptions } from '@/theme/theme.interface';
-import { greyKey } from '@/theme/shadows';
+import { GreyKey } from '@/theme/shadows';
 export function BaseOptionChartStyle() {
   const theme: ThemeOptions = useTheme();
   const background = {
@@ -38,7 +38,7 @@ export function BaseOptionChartStyle() {
               border: 0,
               textAlign: 'center',
               fontWeight: theme.typography.fontWeightBold,
-              backgroundColor: theme.palette.grey[500 as greyKey],
+              backgroundColor: theme.palette.grey[500 as GreyKey],
               color:
                 theme.palette.text[
                   theme.palette.mode === 'light' ? 'secondary' : 'primary'
@@ -202,7 +202,7 @@ export default function BaseOptionChart() {
       radialBar: {
         track: {
           strokeWidth: '100%',
-          background: theme.palette.grey[500 as greyKey],
+          background: theme.palette.grey[500 as GreyKey],
         },
         dataLabels: {
           value: LABEL_VALUE,

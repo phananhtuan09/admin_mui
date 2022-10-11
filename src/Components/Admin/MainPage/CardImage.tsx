@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-import './CardImage.scss'
+import './CardImage.scss';
 export default function CardImage(props: any) {
-  const [isSelected, setIsSelected] = useState(false)
-  const { path, id } = props
+  const [isSelected, setIsSelected] = useState(false);
+  const { path, id } = props;
   const handelClick = () => {
-    setIsSelected(!isSelected)
-  }
+    setIsSelected(!isSelected);
+  };
   return (
     <div className="card-container" onClick={handelClick}>
       <img className="card-image" src={path} alt="picture by a tuan" />
@@ -20,5 +20,5 @@ export default function CardImage(props: any) {
       />
       <label htmlFor={id} className="card-label"></label>
     </div>
-  )
+  );
 }

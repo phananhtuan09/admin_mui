@@ -8,7 +8,7 @@ import {
   ProductList,
   ProductCartWidget,
   ProductFilterSidebar,
-} from '../sections/@dashboard/products';
+} from '@/Components/Admin/Products';
 // mock
 import PRODUCTS from '@/Components/Global/_mock/products';
 

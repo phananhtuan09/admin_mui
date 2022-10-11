@@ -1,21 +1,22 @@
-import { useRef, useState } from 'react';
+import { MouseEvent, useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
-import { alpha } from '@mui/material/styles';
 import {
+  Avatar,
   Box,
   Divider,
-  Typography,
-  Stack,
-  MenuItem,
-  Avatar,
   IconButton,
+  MenuItem,
+  Stack,
+  Typography,
 } from '@mui/material';
+import { alpha } from '@mui/system';
 // components
 import MenuPopover from '@/Components/Global/MenuPopover';
 // mocks_
 import account from '@/Components/Global/_mock/account';
-import React from 'react';
+import { Theme } from '@/theme/theme.interface';
+
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -41,16 +42,16 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const anchorRef = useRef(null);
 
-  const [open, setOpen] = useState(null);
+  const [open, setOpen] = useState<null | Element>(null);
 
-  const handleOpen = (event: any) => {
+  const handleOpen = (event: MouseEvent) => {
     setOpen(event.currentTarget);
   };
 
   const handleClose = () => {
     setOpen(null);
   };
-  const IconButtonStyles: any = {
+  const IconButtonStyles = {
     p: 0,
     '&:before': {
       zIndex: 1,
@@ -59,7 +60,7 @@ export default function AccountPopover() {
       height: '100%',
       borderRadius: '50%',
       position: 'absolute',
-      bgcolor: (theme: any) => alpha(theme.palette.grey[900], 0.8),
+      bgcolor: (theme: Theme) => alpha(theme.palette.grey[900], 0.8),
     },
   };
   return (
