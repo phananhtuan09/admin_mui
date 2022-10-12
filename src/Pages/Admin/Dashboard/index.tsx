@@ -1,24 +1,23 @@
 import { faker } from '@faker-js/faker';
 // @mui
+import { Container, Grid, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography } from '@mui/material';
 // components
-import Page from '@/Components/Global/Page';
 import Iconify from '@/Components/Global/Iconify';
+import Page from '@/Components/Global/Page';
 // sections
 import {
-  AppTasks,
+  AppConversionRates,
+  AppCurrentSubject,
+  AppCurrentVisits,
   AppNewsUpdate,
   AppOrderTimeline,
-  AppCurrentVisits,
-  AppWebsiteVisits,
+  AppTasks,
   AppTrafficBySite,
+  AppWebsiteVisits,
   AppWidgetSummary,
-  AppCurrentSubject,
-  AppConversionRates,
 } from '@/Components/Admin/Dashboard';
 import { ThemeOptions } from '@/theme/theme.interface';
-
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {

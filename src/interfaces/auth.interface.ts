@@ -14,6 +14,7 @@ export interface UserTypes {
   modifiedAt?: number;
   accessToken?: string;
   refreshToken?: string;
+  remember?: boolean;
 }
 export interface AuthTypes {
   loading: boolean;

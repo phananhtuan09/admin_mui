@@ -5,11 +5,14 @@ import { UserTypes, AuthTypes } from '@/interfaces/auth.interface';
 export const loginDispatch = createAsyncThunk(
   'auth/login',
   async (loginForm: UserTypes, { rejectWithValue }) => {
-    const response = await AuthService.login(loginForm);
+    const { email, password, remember } = loginForm;
+    const response = await AuthService.login({ email, password });
     if (response.message) {
       return rejectWithValue(response.message);
     } else {
-      localStorage.setItem('userInfo', JSON.stringify(response));
+      if (remember) {
+        localStorage.setItem('userInfo', JSON.stringify(response));
+      }
       return response;
     }
   }
@@ -37,6 +40,16 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     clearState: (state) => {
+      return {
+        ...state,
+        loading: false,
+        userInfo: {},
+        error: '',
+        isAuthenticated: false,
+      };
+    },
+    logOut: (state) => {
+      localStorage.removeItem('userInfo');
       return {
         ...state,
         loading: false,
@@ -103,5 +116,5 @@ export const authSlice = createSlice({
     //   },
   },
 });
-export const { clearState } = authSlice.actions;
+export const { clearState, logOut } = authSlice.actions;
 export default authSlice.reducer;

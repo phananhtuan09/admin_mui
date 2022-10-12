@@ -1,5 +1,5 @@
 import { MouseEvent, useRef, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
 import {
   Avatar,
@@ -16,7 +16,8 @@ import MenuPopover from '@/Components/Global/MenuPopover';
 // mocks_
 import account from '@/Components/Global/_mock/account';
 import { Theme } from '@/theme/theme.interface';
-
+import { useAppDispatch } from '@/redux/store';
+import { logOut } from '@/redux/slice/auth';
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -40,6 +41,8 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const anchorRef = useRef(null);
 
   const [open, setOpen] = useState<null | Element>(null);
@@ -50,6 +53,10 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null);
+  };
+  const handleLogOut = () => {
+    dispatch(logOut());
+    navigate('/login');
   };
   const IconButtonStyles = {
     p: 0,
@@ -113,7 +120,7 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
+        <MenuItem onClick={handleLogOut} sx={{ m: 1 }}>
           Logout
         </MenuItem>
       </MenuPopover>

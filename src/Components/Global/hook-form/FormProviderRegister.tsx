@@ -1,18 +1,12 @@
 // form
 import { ReactNode } from 'react';
 import { FormProvider as Form, UseFormReturn } from 'react-hook-form';
+import { UserTypes } from '@/interfaces/auth.interface';
 // ----------------------------------------------------------------------
-
-interface RegisterFormProps {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
 
 interface FormProviderProps {
   children: ReactNode;
-  methods: UseFormReturn<RegisterFormProps>;
+  methods: UseFormReturn<UserTypes>;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 export default function FormProviderRegister({

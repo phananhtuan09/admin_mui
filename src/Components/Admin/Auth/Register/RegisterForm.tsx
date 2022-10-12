@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // form
 import { useForm } from 'react-hook-form';
@@ -13,12 +13,20 @@ import {
   FormProviderRegister,
   RHFTextField,
 } from '@/Components/Global/hook-form';
-
+import { registerDispatch, clearState } from '@/redux/slice/auth';
+import Toastify, { optionsToast } from '@/Components/Global/Toastify';
+import { toast } from 'react-toastify';
+import { useAppSelector, useAppDispatch } from '@/redux/store';
+import { UserTypes } from '@/interfaces/auth.interface';
 // ----------------------------------------------------------------------
 
 export default function RegisterForm() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
+  const { error, loading, isAuthenticated } = useAppSelector(
+    (state) => state.auth
+  );
   const [showPassword, setShowPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
@@ -30,7 +38,7 @@ export default function RegisterForm() {
     password: Yup.string().required('Password is required'),
   });
 
-  const defaultValues = {
+  const defaultValues: UserTypes = {
     firstName: '',
     lastName: '',
     email: '',
@@ -47,50 +55,72 @@ export default function RegisterForm() {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async () => {
-    navigate('/dashboard', { replace: true });
+  const onSubmit = async (data: UserTypes) => {
+    dispatch(registerDispatch(data));
+    //navigate('/dashboard', { replace: true });
   };
+  useEffect(() => {
+    if (error) {
+      toast.error(<>{error}</>, { ...optionsToast, type: toast.TYPE.ERROR });
+    }
+    if (isAuthenticated) {
+      toast.success('Register Successful!', {
+        ...optionsToast,
+        type: toast.TYPE.SUCCESS,
+      });
+      dispatch(clearState());
+      setTimeout(() => {
+        navigate('/login');
+      }, 1000);
+    }
+    return () => {
+      dispatch(clearState());
+    };
+  }, [dispatch, isAuthenticated, error]);
 
   return (
-    <FormProviderRegister methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={3}>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <RHFTextField name="firstName" label="First name" />
-          <RHFTextField name="lastName" label="Last name" />
+    <>
+      <FormProviderRegister methods={methods} onSubmit={handleSubmit(onSubmit)}>
+        <Stack spacing={3}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <RHFTextField name="firstName" label="First name" />
+            <RHFTextField name="lastName" label="Last name" />
+          </Stack>
+
+          <RHFTextField name="email" label="Email address" />
+
+          <RHFTextField
+            name="password"
+            label="Password"
+            type={showPassword ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    edge="end"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <Iconify
+                      icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'}
+                    />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <LoadingButton
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
+          >
+            Register
+          </LoadingButton>
         </Stack>
-
-        <RHFTextField name="email" label="Email address" />
-
-        <RHFTextField
-          name="password"
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  edge="end"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  <Iconify
-                    icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'}
-                  />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-
-        <LoadingButton
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          loading={isSubmitting}
-        >
-          Register
-        </LoadingButton>
-      </Stack>
-    </FormProviderRegister>
+      </FormProviderRegister>
+      <Toastify />
+    </>
   );
 }
