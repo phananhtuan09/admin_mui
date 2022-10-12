@@ -33,10 +33,10 @@ function IconColor({ sx, ...other }: IconColorProps) {
     </Box>
   );
 }
-type FunctionChecked = (color: string) => boolean;
+
 interface ColorManyPickerProps {
   colors: string[];
-  onChecked: FunctionChecked;
+  onChecked: (color: string) => boolean;
   sx?: SxProps<Theme>;
 }
 export default function ColorManyPicker({

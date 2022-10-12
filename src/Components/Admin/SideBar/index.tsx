@@ -35,13 +35,16 @@ const RootStyle = styled('div')(({ theme }) => ({
 interface AccountStyleProps {
   theme: Theme;
 }
-const AccountStyle = styled('div')(({ theme }: AccountStyleProps) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: useTheme().spacing(2, 2.5),
-  borderRadius: Number(theme.shape.borderRadius) * 1.5,
-  backgroundColor: theme.palette.grey[50012],
-}));
+const AccountStyle = styled('div')(({ theme }: AccountStyleProps) => {
+  const defaultTheme = useTheme();
+  return {
+    display: 'flex',
+    alignItems: 'center',
+    padding: defaultTheme.spacing(2, 2.5),
+    borderRadius: Number(theme.shape.borderRadius) * 1.5,
+    backgroundColor: theme.palette.grey[50012],
+  };
+});
 
 // ----------------------------------------------------------------------
 

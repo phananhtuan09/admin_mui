@@ -4,7 +4,7 @@ import { Badge } from '@mui/material';
 // component
 import Iconify from '@/Components/Global/Iconify';
 import { Theme as customTheme } from '@/theme/theme.interface';
-import { styled, useTheme, Theme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 // ----------------------------------------------------------------------
 interface RootStyleProps {
   theme: customTheme;

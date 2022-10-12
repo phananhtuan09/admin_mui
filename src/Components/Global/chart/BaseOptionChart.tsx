@@ -1,10 +1,9 @@
 // material
-import { alpha, useTheme } from '@mui/material/styles';
 import { GlobalStyles } from '@mui/material';
-import React from 'react';
+import { alpha, useTheme } from '@mui/material/styles';
 // ----------------------------------------------------------------------
-import { ThemeOptions } from '@/theme/theme.interface';
 import { GreyKey } from '@/theme/shadows';
+import { ThemeOptions } from '@/theme/theme.interface';
 export function BaseOptionChartStyle() {
   const theme: ThemeOptions = useTheme();
   const background = {

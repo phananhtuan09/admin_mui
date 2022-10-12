@@ -1,12 +1,11 @@
 // @mui
-import { useTheme } from '@mui/material/styles';
+import { useTheme, Breakpoint } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 // ----------------------------------------------------------------------
-
 export default function useResponsive(
-  query?: string,
-  key?: any,
+  query: string,
+  key: Breakpoint,
   start?: any,
   end?: any
 ) {
@@ -28,7 +27,7 @@ export default function useResponsive(
     return mediaDown;
   }
 
-  if (query === 'between') {
+  if (query === 'between' && mediaBetween) {
     return mediaBetween;
   }
 

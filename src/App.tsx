@@ -1,8 +1,8 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { publicRoutes } from '@/routes/publicRoutes';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import React, { Fragment, Suspense } from 'react';
 import PrivateRoute from '@/routes/privateRoutes';
+import React, { Suspense } from 'react';
 // import * as testApi from '@/apiServices/testApi'
 // theme
 import ScrollToTop from '@/utils/ScrollToTop';
@@ -11,6 +11,7 @@ import { BaseOptionChartStyle } from '@/Components/Global/chart/BaseOptionChart'
 
 const DefaultLayout = React.lazy(() => import('@/Layout/DefaultLayout'));
 const NotFoundPage = React.lazy(() => import('@/Pages/Admin/NotFound'));
+import LoadingPage from '@/Pages/Admin/Loading';
 //import { alpha, useTheme } from '@mui/material/styles';
 
 interface MyInFo {
@@ -65,7 +66,7 @@ function App() {
             <Route
               path={route.path}
               element={
-                <Suspense fallback={<>...</>}>
+                <Suspense fallback={<LoadingPage />}>
                   <Layout>
                     {route.private ? (
                       <PrivateRoute>
@@ -84,7 +85,7 @@ function App() {
         <Route
           path="*"
           element={
-            <Suspense fallback={<>...</>}>
+            <Suspense fallback={<LoadingPage />}>
               <NotFoundPage />
             </Suspense>
           }

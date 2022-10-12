@@ -15,6 +15,7 @@ interface RootStyleProps {
   ownerState: OwnerStateProps;
 }
 const RootStyle = styled('span')(({ theme, ownerState }: RootStyleProps) => {
+  const defaultTheme = useTheme();
   const isLight = theme.palette.mode === 'light';
   const { color, variant } = ownerState;
 
@@ -44,7 +45,7 @@ const RootStyle = styled('span')(({ theme, ownerState }: RootStyleProps) => {
     whiteSpace: 'nowrap',
     display: 'inline-flex',
     justifyContent: 'center',
-    padding: useTheme().spacing(0, 1),
+    padding: defaultTheme.spacing(0, 1),
     color: theme.palette.grey[800],
     fontSize: theme.typography.pxToRem(12),
     fontFamily: theme.typography.fontFamily,
@@ -96,7 +97,7 @@ export default function Label({
     height: 16,
     '& svg, img': { width: 1, height: 1, objectFit: 'cover' },
   };
-
+  const RootTheme: any = useTheme();
   return (
     <RootStyle
       ownerState={{ color, variant }}
@@ -105,7 +106,7 @@ export default function Label({
         ...(endIcon && { pr: 0.75 }),
         ...sx,
       }}
-      theme={useTheme()}
+      theme={RootTheme}
     >
       {startIcon && <Box sx={{ mr: 0.75, ...style }}>{startIcon}</Box>}
 

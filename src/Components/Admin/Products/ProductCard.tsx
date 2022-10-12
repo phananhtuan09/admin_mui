@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Box, Card, Link, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 // utils
-import { fCurrency } from '../../../utils/formatNumber';
+import { fCurrency } from '@/utils/formatNumber';
 // components
 import { ColorPreview } from '@/Components/Global/Color-Utils';
 import Label from '@/Components/Global/Label';

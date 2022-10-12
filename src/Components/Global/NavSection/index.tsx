@@ -3,6 +3,7 @@ import {
   matchPath,
   NavLink as RouterLink,
   useLocation,
+  NavLinkProps,
 } from 'react-router-dom';
 // material
 import {
@@ -12,18 +13,14 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  SxProps,
 } from '@mui/material';
 import { alpha, styled, useTheme, Theme } from '@mui/material/styles';
 //
 import Iconify from '../Iconify';
 
 // ----------------------------------------------------------------------
-// interface ListItem {
-//   key?: string
-//   component?: any
-//   to?: string
-//   sx?: any
-// }
+
 const ListItemStyle = styled(({ children, ...props }: ListItemStyleProps) => {
   if (children) {
     return (
@@ -51,27 +48,39 @@ const ListItemIconStyle = styled(ListItemIcon)({
   justifyContent: 'center',
 });
 //--------------------------------------------------------------------
-interface ListItemStyleProps {
-  key?: any;
-  component?: any;
-  to?: any;
-  sx?: any;
-  onClick?: any;
+interface NavConfigProps {
+  title: string;
+  path: string;
+  icon: JSX.Element;
+  info?: string;
   children?: any | any[];
+}
+interface NavSectionProps {
+  navConfig: Array<NavConfigProps>;
+}
+interface ListItemStyleProps {
+  key?: string;
+  component?: React.ForwardRefExoticComponent<
+    NavLinkProps & React.RefAttributes<HTMLAnchorElement>
+  >;
+  to?: string;
+  sx?: SxProps;
+  onClick?: () => void;
+  children?: JSX.Element | JSX.Element[];
 }
 
 // ----------------------------------------------------------------------
 
-interface NavItemInterface {
-  title?: string;
-  path?: string;
-  icon?: any;
-  info?: string;
-  children?: any;
-}
+// interface NavItemInterface {
+//   title?: string;
+//   path: string;
+//   icon?: JSX.Element;
+//   info: string;
+//   children?: React.ReactNode;
+// }
 interface NavItemProps {
-  item: NavItemInterface;
-  active: Function;
+  item: NavConfigProps;
+  active: (path: string) => boolean;
 }
 function NavItem({ item, active }: NavItemProps) {
   const customTheme: Theme = useTheme();
@@ -110,7 +119,7 @@ function NavItem({ item, active }: NavItemProps) {
         >
           <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
           <ListItemText disableTypography primary={title} />
-          {info && info}
+          {/* {info && info} */}
           <Iconify
             icon={
               open
@@ -123,7 +132,7 @@ function NavItem({ item, active }: NavItemProps) {
 
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            {children.map((itemList: NavItemInterface) => {
+            {children.map((itemList: NavConfigProps) => {
               const titleList = itemList.title;
               const pathList = itemList.path;
               const isActiveSub = active(path);
@@ -177,12 +186,12 @@ function NavItem({ item, active }: NavItemProps) {
     >
       <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
       <ListItemText disableTypography primary={title} />
-      {info && info}
+      {/* {info && info} */}
     </ListItemStyle>
   );
 }
 
-export default function NavSection({ navConfig, ...other }: any) {
+export default function NavSection({ navConfig, ...other }: NavSectionProps) {
   const { pathname } = useLocation();
 
   const match = (path: string) =>
@@ -191,7 +200,7 @@ export default function NavSection({ navConfig, ...other }: any) {
   return (
     <Box {...other}>
       <List disablePadding sx={{ p: 1 }}>
-        {navConfig.map((item: NavItemInterface) => (
+        {navConfig.map((item: NavConfigProps) => (
           <NavItem key={item.title} item={item} active={match} />
         ))}
       </List>
