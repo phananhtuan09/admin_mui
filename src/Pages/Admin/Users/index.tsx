@@ -73,6 +73,7 @@ function applySortFilter(
   query: string
 ) {
   if (!Array.isArray(array)) return;
+
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -82,7 +83,8 @@ function applySortFilter(
   if (query) {
     return filter(
       array,
-      (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_user) =>
+        _user.firstName.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -109,6 +111,20 @@ export default function User() {
   useUpdateEffect(() => {
     setUserList(users);
   }, [users]);
+  let emptyRows = 0,
+    filteredUsers,
+    isUserNotFound;
+  if (userList) {
+    emptyRows =
+      page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList!.length) : 0;
+    filteredUsers = applySortFilter(
+      userList,
+      getComparator(order, orderBy),
+      filterName
+    );
+    isUserNotFound = filteredUsers!.length === 0;
+  }
+
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -119,7 +135,7 @@ export default function User() {
     if (event.target.checked) {
       if (userList) {
         let newSelecteds: any = [];
-        newSelecteds = userList.map((n) => n.username);
+        newSelecteds = userList.map((n) => n.firstName);
         setSelected(newSelecteds);
       }
 
@@ -160,17 +176,6 @@ export default function User() {
   const handleFilterByName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilterName(event.target.value);
   };
-
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList!.length) : 0;
-
-  const filteredUsers = applySortFilter(
-    userList,
-    getComparator(order, orderBy),
-    filterName
-  );
-
-  const isUserNotFound = filteredUsers ? filteredUsers.length === 0 : 0;
 
   return (
     <>
