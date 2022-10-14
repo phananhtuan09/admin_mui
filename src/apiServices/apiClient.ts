@@ -1,14 +1,23 @@
 import axios from 'axios';
 import { stringify } from 'qs';
+
 const domainUrl = process.env.REACT_APP_BASE_URL;
-const accessToken = process.env.REACT_APP_ACCESS_TOKEN;
-export const ApiClient = {
-  getHeaders(contentType = 'application/x-www-form-urlencoded') {
-    return {
+
+//const accessToken = process.env.REACT_APP_ACCESS_TOKEN;
+const ApiClient = {
+  getHeaders(token = '', contentType = 'application/x-www-form-urlencoded') {
+    const headerContent = {
       'Content-Type': contentType,
       'Access-Control-Allow-Origin': '*',
-      authorization: `Bearer ${accessToken}`,
     };
+    if (!token) {
+      return headerContent;
+    } else {
+      return {
+        ...headerContent,
+        authorization: `Bearer ${token}`,
+      };
+    }
   },
   //convert object to query string
   getStringQuery(query: object | string = {}, options: object = {}) {
@@ -97,19 +106,20 @@ export const ApiClient = {
     return fd;
   },
   // get
-  async get(url = '', query = {}, params = {}) {
+  async get(url = '', query = {}, params = {}, token = '') {
     const stringQuery = this.getStringQuery(query);
     const requestUrl = !stringQuery ? url : `${url}?${stringQuery}`;
+
     const response = await axios
       .get(domainUrl + requestUrl, {
         params,
-        headers: this.getHeaders(),
+        headers: this.getHeaders(token),
       })
       .catch((error) => this.catchErrorRequest(error));
     return response;
   },
   //post
-  async post(url = '', query = {}, params = {}, appendUrl = '') {
+  async post(url = '', query = {}, params = {}, appendUrl = '', token = '') {
     const stringQuery = this.getStringQuery(query);
     const requestUrl = !stringQuery
       ? url
@@ -117,7 +127,7 @@ export const ApiClient = {
     const param = this.convertToPostData(params, undefined, undefined);
 
     const config = {
-      headers: this.getHeaders(),
+      headers: this.getHeaders(token),
     };
 
     const response = await axios
@@ -232,3 +242,4 @@ export const ApiClient = {
     return response;
   },
 };
+export default ApiClient;

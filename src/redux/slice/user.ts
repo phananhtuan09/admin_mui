@@ -1,17 +1,61 @@
-import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
+import { AllUser } from '@/interfaces/auth.interface';
+import * as UserService from '@/apiServices/users.service';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+const initialState: AllUser = {
+  loading: false,
+  users: [],
+  error: null,
+};
+
+export const getAllUserDispatch = createAsyncThunk(
+  'user/geAllUser',
+  async (token: string, { rejectWithValue }) => {
+    const response = await UserService.geAllUser(token);
+    if (response.data) {
+      return response.data;
+    }
+    return rejectWithValue(response.message);
+  }
+);
+
 export const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    loading: false,
-    userInfo: {},
-    userToken: null,
-    error: null,
-    success: false,
-  },
+  initialState,
   reducers: {
-    addUsers: (state, action) => {},
+    clearState: (state) => {
+      return {
+        ...state,
+        loading: false,
+        users: [],
+        error: null,
+      };
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getAllUserDispatch.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      })
+      .addCase(getAllUserDispatch.fulfilled, (state, action: any) => {
+        return {
+          ...state,
+          loading: false,
+          users: action.payload,
+        };
+      })
+      .addCase(getAllUserDispatch.rejected, (state, action: any) => {
+        return {
+          ...state,
+          loading: false,
+          users: [],
+          error: action.payload,
+        };
+      });
   },
 });
-export const { addUsers } = userSlice.actions;
+export const { clearState } = userSlice.actions;
 export default userSlice.reducer;

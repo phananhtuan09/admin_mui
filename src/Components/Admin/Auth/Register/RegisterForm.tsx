@@ -18,6 +18,8 @@ import Toastify, { optionsToast } from '@/Components/Global/Toastify';
 import { toast } from 'react-toastify';
 import { useAppSelector, useAppDispatch } from '@/redux/store';
 import { UserTypes } from '@/interfaces/auth.interface';
+import { useUpdateEffect } from '@/customHooks';
+
 // ----------------------------------------------------------------------
 
 export default function RegisterForm() {
@@ -59,7 +61,7 @@ export default function RegisterForm() {
     dispatch(registerDispatch(data));
     //navigate('/dashboard', { replace: true });
   };
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (error) {
       toast.error(<>{error}</>, { ...optionsToast, type: toast.TYPE.ERROR });
     }
@@ -68,15 +70,16 @@ export default function RegisterForm() {
         ...optionsToast,
         type: toast.TYPE.SUCCESS,
       });
-      dispatch(clearState());
+
       setTimeout(() => {
         navigate('/login');
       }, 1000);
     }
-    return () => {
-      dispatch(clearState());
-    };
-  }, [dispatch, isAuthenticated, error]);
+    dispatch(clearState());
+    // return () => {
+    //   dispatch(clearState());
+    // };
+  }, [isAuthenticated, error]);
 
   return (
     <>

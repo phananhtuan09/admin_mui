@@ -1,6 +1,6 @@
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
@@ -30,15 +30,19 @@ import {
   UserMoreMenu,
 } from '@/Components/Admin/Users';
 // mock
-import USERLIST from '@/Components/Global/_mock/user';
 
+import USERLIST from '@/Components/Global/_mock/user';
+import { useAppSelector, useAppDispatch } from '@/redux/store';
+import { clearState, getAllUserDispatch } from '@/redux/slice/user';
+import { useEffectOnce } from '@/customHooks';
+import { UserTypes } from '@/interfaces/auth.interface';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
+  { id: 'email', label: 'Email', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
+  { id: 'birthday', label: 'Birthday', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
@@ -82,17 +86,28 @@ function applySortFilter(
 }
 
 export default function User() {
+  const dispatch = useAppDispatch();
+  const [userList, setUserList] = useState<UserTypes[] | null>(null);
+  const { userInfo } = useAppSelector((state) => state.auth);
+  const { users } = useAppSelector((state) => state.user);
+  // const { error, loading, users } = useAppSelector((state) => state.user);
   const [page, setPage] = useState<number>(0);
-
   const [order, setOrder] = useState<Order>('asc');
-
   const [selected, setSelected] = useState<string[]>([]);
-
   const [orderBy, setOrderBy] = useState<string>('name');
-
   const [filterName, setFilterName] = useState<string>('');
-
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+
+  useEffect(() => {
+    if (userInfo.accessToken) {
+      dispatch(getAllUserDispatch(userInfo.accessToken));
+    }
+    console.log('re-render');
+  }, []);
+
+  useEffect(() => {
+    setUserList(users);
+  }, [users]);
 
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';

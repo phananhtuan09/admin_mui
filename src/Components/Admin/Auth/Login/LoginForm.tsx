@@ -19,7 +19,7 @@ import { loginDispatch, clearState } from '@/redux/slice/auth';
 import Toastify, { optionsToast } from '@/Components/Global/Toastify';
 import { toast } from 'react-toastify';
 import { UserTypes } from '@/interfaces/auth.interface';
-
+import { useUpdateEffect } from '@/customHooks';
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
@@ -29,6 +29,7 @@ export default function LoginForm() {
   const { error, loading, isAuthenticated } = useAppSelector(
     (state) => state.auth
   );
+
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
@@ -54,10 +55,19 @@ export default function LoginForm() {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async (data: UserTypes) => {
+  const onSubmit = (data: UserTypes) => {
     dispatch(loginDispatch(data));
   };
-  useEffect(() => {
+  // useEffect(() => {
+  //   dispatch(clearState());
+  // }, []);
+  // useEffect(() => {
+
+  //   return () => {
+  //     dispatch(clearState());
+  //   };
+  // }, [error, isAuthenticated]);
+  useUpdateEffect(() => {
     if (error) {
       toast.error(<>{error}</>, { ...optionsToast, type: toast.TYPE.ERROR });
       dispatch(clearState());
@@ -67,15 +77,12 @@ export default function LoginForm() {
         ...optionsToast,
         type: toast.TYPE.SUCCESS,
       });
-      dispatch(clearState());
+      // dispatch(clearState());
       setTimeout(() => {
         navigate('/dashboard', { replace: true });
       }, 1000);
     }
-    return () => {
-      dispatch(clearState());
-    };
-  }, [dispatch, isAuthenticated, error]);
+  }, [error, isAuthenticated]);
 
   return (
     <>

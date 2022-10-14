@@ -13,6 +13,7 @@ const DefaultLayout = React.lazy(() => import('@/Layout/DefaultLayout'));
 const NotFoundPage = React.lazy(() => import('@/Pages/Admin/NotFound'));
 import LoadingPage from '@/Pages/Admin/Loading';
 //import { alpha, useTheme } from '@mui/material/styles';
+//import { useAppSelector } from '@/redux/store';
 
 interface MyInFo {
   name: string;
@@ -20,7 +21,14 @@ interface MyInFo {
 }
 
 function App() {
-  // const theme = useTheme();
+  // const { error, loading, isAuthenticated, userInfo } = useAppSelector(
+  //   (state) => state.auth
+  // );
+  // console.log('error', error);
+  // console.log('loading', loading);
+  // console.log('isAuthenticated', isAuthenticated);
+  // console.log('userInfo', userInfo);
+  // // const theme = useTheme();
   // console.log(theme);
 
   //useEffect(() => {

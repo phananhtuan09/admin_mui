@@ -15,9 +15,10 @@ import { alpha } from '@mui/system';
 import MenuPopover from '@/Components/Global/MenuPopover';
 // mocks_
 import account from '@/Components/Global/_mock/account';
-import { Theme } from '@/theme/theme.interface';
+import { clearState } from '@/redux/slice/auth';
 import { useAppDispatch } from '@/redux/store';
-import { logOut } from '@/redux/slice/auth';
+import { Theme } from '@/theme/theme.interface';
+
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -55,7 +56,7 @@ export default function AccountPopover() {
     setOpen(null);
   };
   const handleLogOut = () => {
-    dispatch(logOut());
+    dispatch(clearState());
     navigate('/login');
   };
   const IconButtonStyles = {

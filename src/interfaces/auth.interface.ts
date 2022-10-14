@@ -1,11 +1,12 @@
 export interface UserTypes {
+  id?: string;
+  firstName?: string;
+  lastName?: string;
   username?: string;
+  avatar?: string;
   password?: string;
   passwordConfirm?: string;
   email?: string;
-  firstName?: string;
-  lastName?: string;
-  avatar?: string;
   gender?: string;
   phone?: string;
   birthday?: string;
@@ -21,4 +22,10 @@ export interface AuthTypes {
   userInfo: UserTypes;
   error: unknown;
   isAuthenticated: boolean;
+  //remember: boolean;
+}
+export interface AllUser {
+  loading: boolean;
+  users: Array<UserTypes>;
+  error: unknown;
 }

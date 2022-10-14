@@ -1,4 +1,4 @@
-import { ApiClient } from '@/apiServices/apiClient';
+import ApiClient from '@/apiServices/apiClient';
 
 export const getUsers = async (id: number | string) => {
   const res = await ApiClient.get(`/users/${id}`);

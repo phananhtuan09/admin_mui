@@ -10,7 +10,7 @@ export const optionsToast = {
   progress: undefined,
 };
 
-export default function Toasttify() {
+export default function Toastify() {
   return (
     <>
       <ToastContainer

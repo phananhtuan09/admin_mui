@@ -2,19 +2,16 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as AuthService from '@/apiServices/auth.service';
 
 import { UserTypes, AuthTypes } from '@/interfaces/auth.interface';
+
 export const loginDispatch = createAsyncThunk(
   'auth/login',
   async (loginForm: UserTypes, { rejectWithValue }) => {
     const { email, password, remember } = loginForm;
     const response = await AuthService.login({ email, password });
-    if (response.message) {
-      return rejectWithValue(response.message);
-    } else {
-      if (remember) {
-        localStorage.setItem('userInfo', JSON.stringify(response));
-      }
-      return response;
+    if (response.data) {
+      return response.data;
     }
+    return rejectWithValue(response.message);
   }
 );
 export const registerDispatch = createAsyncThunk(
@@ -22,11 +19,10 @@ export const registerDispatch = createAsyncThunk(
   async (registerForm: UserTypes, { rejectWithValue }) => {
     const response = await AuthService.register(registerForm);
 
-    if (response.message) {
-      return rejectWithValue(response.message);
-    } else {
-      return response;
+    if (response.data) {
+      return response.data;
     }
+    return rejectWithValue(response.message);
   }
 );
 const initialState: AuthTypes = {
@@ -40,16 +36,6 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     clearState: (state) => {
-      return {
-        ...state,
-        loading: false,
-        userInfo: {},
-        error: '',
-        isAuthenticated: false,
-      };
-    },
-    logOut: (state) => {
-      localStorage.removeItem('userInfo');
       return {
         ...state,
         loading: false,
@@ -110,11 +96,7 @@ export const authSlice = createSlice({
           error: action.payload.message,
         };
       });
-    //   [logout.fulfilled]: (state, action) => {
-    //     state.isAuthenticated = false;
-    //     state.user = {};
-    //   },
   },
 });
-export const { clearState, logOut } = authSlice.actions;
+export const { clearState } = authSlice.actions;
 export default authSlice.reducer;
