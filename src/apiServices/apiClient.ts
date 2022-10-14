@@ -12,12 +12,11 @@ const ApiClient = {
     };
     if (!token) {
       return headerContent;
-    } else {
-      return {
-        ...headerContent,
-        authorization: `Bearer ${token}`,
-      };
     }
+    return {
+      ...headerContent,
+      authorization: `Bearer ${token}`,
+    };
   },
   //convert object to query string
   getStringQuery(query: object | string = {}, options: object = {}) {

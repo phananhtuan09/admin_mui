@@ -1,41 +1,43 @@
-import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
+import { filter } from 'lodash';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
-  Card,
-  Table,
-  Stack,
   Avatar,
   Button,
+  Card,
   Checkbox,
-  TableRow,
+  Container,
+  Stack,
+  Table,
   TableBody,
   TableCell,
-  Container,
-  Typography,
   TableContainer,
   TablePagination,
+  TableRow,
+  Typography,
 } from '@mui/material';
 // components
-import Page from '@/Components/Global/Page';
-import Label from '@/Components/Global/Label';
-import Scrollbar from '@/Components/Global/Scrollbar';
-import Iconify from '@/Components/Global/Iconify';
-import SearchNotFound from '@/Components/Global/SearchNotFound';
 import {
   UserListHead,
   UserListToolbar,
   UserMoreMenu,
 } from '@/Components/Admin/Users';
+import Iconify from '@/Components/Global/Iconify';
+import Label from '@/Components/Global/Label';
+import Page from '@/Components/Global/Page';
+import Scrollbar from '@/Components/Global/Scrollbar';
+import SearchNotFound from '@/Components/Global/SearchNotFound';
 // mock
 
-import USERLIST from '@/Components/Global/_mock/user';
-import { useAppSelector, useAppDispatch } from '@/redux/store';
-import { clearState, getAllUserDispatch } from '@/redux/slice/user';
-import { useEffectOnce } from '@/customHooks';
+//import userList from '@/Components/Global/_mock/user';
 import { UserTypes } from '@/interfaces/auth.interface';
+import { getAllUserDispatch } from '@/redux/slice/user';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
+import { useUpdateEffect, useEffectOnce } from '@/customHooks';
+import LoadingPage from '../Loading';
+import { defaultAvatar } from '@/assets/Images';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -66,10 +68,11 @@ function getComparator(order: Order, orderBy: string) {
 }
 
 function applySortFilter(
-  array: Array<any>,
+  array: Array<any> | null,
   comparator: Function,
   query: string
 ) {
+  if (!Array.isArray(array)) return;
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -89,8 +92,7 @@ export default function User() {
   const dispatch = useAppDispatch();
   const [userList, setUserList] = useState<UserTypes[] | null>(null);
   const { userInfo } = useAppSelector((state) => state.auth);
-  const { users } = useAppSelector((state) => state.user);
-  // const { error, loading, users } = useAppSelector((state) => state.user);
+  const { users, loading } = useAppSelector((state) => state.user);
   const [page, setPage] = useState<number>(0);
   const [order, setOrder] = useState<Order>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -98,17 +100,15 @@ export default function User() {
   const [filterName, setFilterName] = useState<string>('');
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
 
-  useEffect(() => {
+  useEffectOnce(() => {
     if (userInfo.accessToken) {
       dispatch(getAllUserDispatch(userInfo.accessToken));
     }
-    console.log('re-render');
-  }, []);
+  });
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     setUserList(users);
   }, [users]);
-
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -117,8 +117,12 @@ export default function User() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
-      setSelected(newSelecteds);
+      if (userList) {
+        let newSelecteds: any = [];
+        newSelecteds = userList.map((n) => n.username);
+        setSelected(newSelecteds);
+      }
+
       return;
     }
     setSelected([]);
@@ -158,153 +162,183 @@ export default function User() {
   };
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList!.length) : 0;
 
   const filteredUsers = applySortFilter(
-    USERLIST,
+    userList,
     getComparator(order, orderBy),
     filterName
   );
 
-  const isUserNotFound = filteredUsers.length === 0;
+  const isUserNotFound = filteredUsers ? filteredUsers.length === 0 : 0;
 
   return (
-    <Page title="Users">
-      <Container>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          mb={5}
-        >
-          <Typography variant="h4" gutterBottom>
-            User
-          </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="#"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-          >
-            New User
-          </Button>
-        </Stack>
+    <>
+      {loading ? (
+        <LoadingPage />
+      ) : (
+        <Page title="Users">
+          <Container>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              mb={5}
+            >
+              <Typography variant="h4" gutterBottom>
+                User
+              </Typography>
+              <Button
+                variant="contained"
+                component={RouterLink}
+                to="#"
+                startIcon={<Iconify icon="eva:plus-fill" />}
+              >
+                New User
+              </Button>
+            </Stack>
 
-        <Card>
-          <UserListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-          />
+            <Card>
+              <UserListToolbar
+                numSelected={selected.length}
+                filterName={filterName}
+                onFilterName={handleFilterByName}
+              />
 
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
+              <Scrollbar>
+                {userList && (
+                  <TableContainer sx={{ minWidth: 800 }}>
+                    <Table>
+                      <UserListHead
+                        order={order}
+                        orderBy={orderBy}
+                        headLabel={TABLE_HEAD}
+                        rowCount={userList ? userList.length : 0}
+                        numSelected={selected.length}
+                        onRequestSort={handleRequestSort}
+                        onSelectAllClick={handleSelectAllClick}
+                      />
 
-                <TableBody>
-                  {filteredUsers
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const {
-                        id,
-                        name,
-                        role,
-                        status,
-                        company,
-                        avatarUrl,
-                        isVerified,
-                      } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
+                      <TableBody>
+                        {filteredUsers &&
+                          filteredUsers
+                            .slice(
+                              page * rowsPerPage,
+                              page * rowsPerPage + rowsPerPage
+                            )
+                            .map((row) => {
+                              const {
+                                id,
+                                firstName,
+                                lastName,
 
-                      return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(name)}
-                            />
-                          </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={2}
+                                status,
+                                email,
+                                avatar,
+                                birthday,
+                              } = row;
+                              const isItemSelected =
+                                selected.indexOf(firstName) !== -1;
+
+                              return (
+                                <TableRow
+                                  hover
+                                  key={id}
+                                  tabIndex={-1}
+                                  role="checkbox"
+                                  selected={isItemSelected}
+                                  aria-checked={isItemSelected}
+                                >
+                                  <TableCell padding="checkbox">
+                                    <Checkbox
+                                      checked={isItemSelected}
+                                      onChange={(event) =>
+                                        handleClick(firstName)
+                                      }
+                                    />
+                                  </TableCell>
+                                  <TableCell
+                                    component="th"
+                                    scope="row"
+                                    padding="none"
+                                  >
+                                    <Stack
+                                      direction="row"
+                                      alignItems="center"
+                                      spacing={2}
+                                    >
+                                      <Avatar
+                                        alt={firstName}
+                                        src={avatar ? avatar : defaultAvatar}
+                                      />
+                                      <Typography variant="subtitle2" noWrap>
+                                        {`${firstName || ''} ${lastName || ''}`}
+                                      </Typography>
+                                    </Stack>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {email || ''}
+                                  </TableCell>
+                                  <TableCell align="left">{'Admin'}</TableCell>
+                                  <TableCell align="left">
+                                    {birthday || ''}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Label
+                                      variant="ghost"
+                                      color={
+                                        (status === false && 'error') ||
+                                        'success'
+                                      }
+                                    >
+                                      {status ? 'Active' : 'Banned'}
+                                    </Label>
+                                  </TableCell>
+
+                                  <TableCell align="right">
+                                    <UserMoreMenu />
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            })}
+                        {emptyRows > 0 && (
+                          <TableRow style={{ height: 53 * emptyRows }}>
+                            <TableCell colSpan={6} />
+                          </TableRow>
+                        )}
+                      </TableBody>
+
+                      {isUserNotFound && (
+                        <TableBody>
+                          <TableRow>
+                            <TableCell
+                              align="center"
+                              colSpan={6}
+                              sx={{ py: 3 }}
                             >
-                              <Avatar alt={name} src={avatarUrl} />
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">{company}</TableCell>
-                          <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left">
-                            {isVerified ? 'Yes' : 'No'}
-                          </TableCell>
-                          <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={
-                                (status === 'banned' && 'error') || 'success'
-                              }
-                            >
-                              {sentenceCase(status)}
-                            </Label>
-                          </TableCell>
-
-                          <TableCell align="right">
-                            <UserMoreMenu />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-
-                {isUserNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
+                              <SearchNotFound searchQuery={filterName} />
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      )}
+                    </Table>
+                  </TableContainer>
                 )}
-              </Table>
-            </TableContainer>
-          </Scrollbar>
+              </Scrollbar>
 
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={USERLIST.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Card>
-      </Container>
-    </Page>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={userList ? userList.length : 0}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Card>
+          </Container>
+        </Page>
+      )}
+    </>
   );
 }

@@ -1,7 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
-import { AllUser } from '@/interfaces/auth.interface';
 import * as UserService from '@/apiServices/users.service';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { AllUser } from '@/interfaces/auth.interface';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 const initialState: AllUser = {
   loading: false,
   users: [],
@@ -52,7 +51,7 @@ export const userSlice = createSlice({
           ...state,
           loading: false,
           users: [],
-          error: action.payload,
+          error: action.payload.message,
         };
       });
   },
