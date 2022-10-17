@@ -1,7 +1,7 @@
 import * as UserService from '@/apiServices/users.service';
-import { AllUser } from '@/interfaces/auth.interface';
+import { IUserProps } from '@/interfaces/redux.interface';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-const initialState: AllUser = {
+const initialState: IUserProps = {
   loading: false,
   users: [],
   error: null,

@@ -17,7 +17,7 @@ import { registerDispatch, clearState } from '@/redux/slice/auth';
 import Toastify, { optionsToast } from '@/Components/Global/Toastify';
 import { toast } from 'react-toastify';
 import { useAppSelector, useAppDispatch } from '@/redux/store';
-import { UserTypes } from '@/interfaces/auth.interface';
+import { IUserInfo } from '@/interfaces/redux.interface';
 import { useUpdateEffect } from '@/customHooks';
 
 // ----------------------------------------------------------------------
@@ -40,7 +40,7 @@ export default function RegisterForm() {
     password: Yup.string().required('Password is required'),
   });
 
-  const defaultValues: UserTypes = {
+  const defaultValues: IUserInfo = {
     firstName: '',
     lastName: '',
     email: '',
@@ -57,7 +57,7 @@ export default function RegisterForm() {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async (data: UserTypes) => {
+  const onSubmit = async (data: IUserInfo) => {
     dispatch(registerDispatch(data));
     //navigate('/dashboard', { replace: true });
   };

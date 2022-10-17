@@ -15,17 +15,19 @@ import {
 
 import authReducer from './slice/auth';
 import userReducer from './slice/user';
+import productReducer from './slice/product';
 
 const persistConfig = {
   key: 'root',
   storage,
   blacklist: ['user'],
-  whitelist: ['auth'],
+  whitelist: ['auth', 'product'],
 };
 
 const rootReducer = combineReducers({
   user: userReducer,
   auth: authReducer,
+  product: productReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

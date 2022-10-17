@@ -12,16 +12,19 @@ const SORT_BY_OPTIONS = [
   { value: 'priceDesc', label: 'Price: High-Low' },
   { value: 'priceAsc', label: 'Price: Low-High' },
 ];
-
-export default function ShopProductSort() {
+interface IShopProductSortProps {
+  onSortBy: (sortBy: string) => void;
+}
+export default function ShopProductSort(props: IShopProductSortProps) {
   const [open, setOpen] = useState<null | Element>(null);
-
+  const { onSortBy } = props;
   const handleOpen = (event: React.MouseEvent) => {
     setOpen(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (sortBy: string) => {
     setOpen(null);
+    onSortBy(sortBy);
   };
 
   return (
@@ -57,7 +60,7 @@ export default function ShopProductSort() {
           <MenuItem
             key={option.value}
             selected={option.value === 'newest'}
-            onClick={handleClose}
+            onClick={() => handleClose(option.value)}
             sx={{ typography: 'body2' }}
           >
             {option.label}

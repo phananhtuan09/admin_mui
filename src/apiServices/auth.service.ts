@@ -1,11 +1,11 @@
 import ApiClient from './apiClient';
-import { UserTypes } from '@/interfaces/auth.interface';
+import { IUserInfo } from '@/interfaces/redux.interface';
 
-export const login = async (payload: UserTypes) => {
+export const login = async (payload: IUserInfo) => {
   const response = await ApiClient.post('/login', {}, payload);
   return response;
 };
-export const register = async (payload: UserTypes) => {
+export const register = async (payload: IUserInfo) => {
   const response = await ApiClient.post('/register', {}, payload);
   return response;
 };

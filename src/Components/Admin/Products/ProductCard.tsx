@@ -7,6 +7,7 @@ import { fCurrency } from '@/utils/formatNumber';
 // components
 import { ColorPreview } from '@/Components/Global/Color-Utils';
 import Label from '@/Components/Global/Label';
+import { IProductInfo } from '@/interfaces/redux.interface';
 
 // ----------------------------------------------------------------------
 
@@ -20,19 +21,11 @@ const ProductImgStyle = styled('img')({
 
 // ----------------------------------------------------------------------
 
-interface ProductProps {
-  name: string;
-  cover: string;
-  price: number;
-  colors: string[];
-  status: string | undefined;
-  priceSale: number | null;
-}
 interface ShopProductCardProps {
-  product: ProductProps;
+  product: IProductInfo;
 }
 export default function ShopProductCard({ product }: ShopProductCardProps) {
-  const { name, cover, price, colors, status, priceSale } = product;
+  const { name, thumbnail, price, quantity, status, priceSale } = product;
 
   return (
     <Card>
@@ -52,7 +45,7 @@ export default function ShopProductCard({ product }: ShopProductCardProps) {
             {status}
           </Label>
         )}
-        <ProductImgStyle alt={name} src={cover} />
+        <ProductImgStyle alt={name} src={thumbnail} />
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
@@ -67,7 +60,9 @@ export default function ShopProductCard({ product }: ShopProductCardProps) {
           alignItems="center"
           justifyContent="space-between"
         >
-          <ColorPreview colors={colors} />
+          <Typography variant="subtitle2" noWrap>
+            {quantity}
+          </Typography>
           <Typography variant="subtitle1">
             <Typography
               component="span"

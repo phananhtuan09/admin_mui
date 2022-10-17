@@ -1,12 +1,12 @@
 // form
 import { ReactNode } from 'react';
 import { FormProvider as Form, UseFormReturn } from 'react-hook-form';
-import { UserTypes } from '@/interfaces/auth.interface';
+import { IUserInfo } from '@/interfaces/redux.interface';
 // ----------------------------------------------------------------------
 
 interface FormProviderProps {
   children: ReactNode;
-  methods: UseFormReturn<UserTypes>;
+  methods: UseFormReturn<IUserInfo>;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 export default function FormProviderLogin({

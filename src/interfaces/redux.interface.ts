@@ -1,4 +1,4 @@
-export interface UserTypes {
+export interface IUserInfo {
   id?: string;
   firstName?: string;
   lastName?: string;
@@ -17,15 +17,32 @@ export interface UserTypes {
   refreshToken?: string;
   remember?: boolean;
 }
-export interface AuthTypes {
+export interface IUserProps {
   loading: boolean;
-  userInfo: UserTypes;
+  users: Array<IUserInfo>;
+  error: unknown;
+}
+export interface IAuthProps {
+  loading: boolean;
+  userInfo: IUserInfo;
   error: unknown;
   isAuthenticated: boolean;
   //remember: boolean;
 }
-export interface AllUser {
+
+export interface IProductInfo {
+  id: number | string;
+  name: string;
+  price: number;
+  priceSale: null | number;
+  quantity: number;
+  thumbnail: string;
+  status: string;
+  createdAt: Date;
+  modifiedAt: Date;
+}
+export interface IProductProps {
   loading: boolean;
-  users: Array<UserTypes>;
+  products: Array<IProductInfo>;
   error: unknown;
 }

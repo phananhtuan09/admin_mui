@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as AuthService from '@/apiServices/auth.service';
 
-import { UserTypes, AuthTypes } from '@/interfaces/auth.interface';
+import { IUserInfo, IAuthProps } from '@/interfaces/redux.interface';
 
 export const loginDispatch = createAsyncThunk(
   'auth/login',
-  async (loginForm: UserTypes, { rejectWithValue }) => {
+  async (loginForm: IUserInfo, { rejectWithValue }) => {
     const { email, password, remember } = loginForm;
     const response = await AuthService.login({ email, password });
     if (response.data) {
@@ -16,7 +16,7 @@ export const loginDispatch = createAsyncThunk(
 );
 export const registerDispatch = createAsyncThunk(
   'auth/register',
-  async (registerForm: UserTypes, { rejectWithValue }) => {
+  async (registerForm: IUserInfo, { rejectWithValue }) => {
     const response = await AuthService.register(registerForm);
 
     if (response.data) {
@@ -25,7 +25,7 @@ export const registerDispatch = createAsyncThunk(
     return rejectWithValue(response.message);
   }
 );
-const initialState: AuthTypes = {
+const initialState: IAuthProps = {
   loading: false,
   userInfo: {},
   error: '',

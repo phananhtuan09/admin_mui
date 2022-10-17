@@ -18,7 +18,7 @@ import { useAppSelector, useAppDispatch } from '@/redux/store';
 import { loginDispatch, clearState } from '@/redux/slice/auth';
 import Toastify, { optionsToast } from '@/Components/Global/Toastify';
 import { toast } from 'react-toastify';
-import { UserTypes } from '@/interfaces/auth.interface';
+import { IUserInfo } from '@/interfaces/redux.interface';
 import { useUpdateEffect } from '@/customHooks';
 // ----------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ export default function LoginForm() {
     password: Yup.string().required('Password is required'),
   });
 
-  const defaultValues: UserTypes = {
+  const defaultValues: IUserInfo = {
     email: '',
     password: '',
     remember: true,
@@ -55,7 +55,7 @@ export default function LoginForm() {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = (data: UserTypes) => {
+  const onSubmit = (data: IUserInfo) => {
     dispatch(loginDispatch(data));
   };
   // useEffect(() => {

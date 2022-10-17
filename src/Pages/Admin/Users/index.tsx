@@ -1,6 +1,5 @@
-import { sentenceCase } from 'change-case';
 import { filter } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
@@ -32,12 +31,12 @@ import SearchNotFound from '@/Components/Global/SearchNotFound';
 // mock
 
 //import userList from '@/Components/Global/_mock/user';
-import { UserTypes } from '@/interfaces/auth.interface';
+import { defaultAvatar } from '@/assets/Images';
+import { useEffectOnce, useUpdateEffect } from '@/customHooks';
+import { IUserInfo } from '@/interfaces/redux.interface';
 import { getAllUserDispatch } from '@/redux/slice/user';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
-import { useUpdateEffect, useEffectOnce } from '@/customHooks';
 import LoadingPage from '../Loading';
-import { defaultAvatar } from '@/assets/Images';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -88,13 +87,13 @@ function applySortFilter<T>(
         _user.firstName.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
-  //console.log(stabilizedThis.map((el) => el[0]));
+
   return stabilizedThis.map((el) => el[0]);
 }
 
 export default function User() {
   const dispatch = useAppDispatch();
-  const [userList, setUserList] = useState<UserTypes[] | null>(null);
+  const [userList, setUserList] = useState<IUserInfo[] | null>(null);
   const { userInfo } = useAppSelector((state) => state.auth);
   const { users, loading } = useAppSelector((state) => state.user);
   const [page, setPage] = useState<number>(0);
