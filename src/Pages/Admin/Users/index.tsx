@@ -41,7 +41,7 @@ import { defaultAvatar } from '@/assets/Images';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'firstName', label: 'Name', alignRight: false },
   { id: 'email', label: 'Email', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
   { id: 'birthday', label: 'Birthday', alignRight: false },
@@ -67,9 +67,9 @@ function getComparator(order: Order, orderBy: string) {
     : (a: any, b: any) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(
-  array: Array<any> | null,
-  comparator: Function,
+function applySortFilter<T>(
+  array: readonly T[],
+  comparator: (a: T, b: T) => number,
   query: string
 ) {
   if (!Array.isArray(array)) return;
@@ -77,6 +77,7 @@ function applySortFilter(
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
+
     if (order !== 0) return order;
     return a[1] - b[1];
   });
@@ -87,6 +88,7 @@ function applySortFilter(
         _user.firstName.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
+  //console.log(stabilizedThis.map((el) => el[0]));
   return stabilizedThis.map((el) => el[0]);
 }
 
@@ -98,7 +100,7 @@ export default function User() {
   const [page, setPage] = useState<number>(0);
   const [order, setOrder] = useState<Order>('asc');
   const [selected, setSelected] = useState<string[]>([]);
-  const [orderBy, setOrderBy] = useState<string>('name');
+  const [orderBy, setOrderBy] = useState<string>('firstName');
   const [filterName, setFilterName] = useState<string>('');
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
 
@@ -125,7 +127,10 @@ export default function User() {
     isUserNotFound = filteredUsers!.length === 0;
   }
 
-  const handleRequestSort = (property: string) => {
+  const handleRequestSort = (
+    event: React.MouseEvent<unknown>,
+    property: string
+  ) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -162,7 +167,10 @@ export default function User() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ): void => {
     setPage(newPage);
   };
 
